@@ -32,6 +32,22 @@ nav a {
     transition: opacity 0.3s ease, color 0.3s ease;
 }
 
+@media (max-width: 768px) {
+    nav {
+        padding: 0 1rem;
+        height: 50px;
+    }
+    
+    nav a {
+        font-size: 1rem;
+        margin-left: 1rem;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+}
+
 nav a:hover {
     opacity: 0.7;
 }
@@ -76,6 +92,14 @@ nav.light-text a:hover {
     color: white;
     padding: 2rem;
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .scroll-section {
+        min-height: 100vh;
+        height: auto;
+        padding: 1rem;
+    }
 }
 
 /* Hero section */
@@ -123,6 +147,31 @@ nav.light-text a:hover {
     padding: 0;
 }
 
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 15vw;
+        margin-top: 15vh;
+        margin-right: 1rem;
+        padding-inline: 0.5rem;
+    }
+    
+    .hero-tagline {
+        position: static;
+        margin-top: 2rem;
+        left: auto;
+        bottom: auto;
+        font-size: 1.2rem;
+        text-align: left;
+        padding: 0 1rem;
+    }
+    
+    .hero-content {
+        padding: 1rem;
+        justify-content: flex-start;
+        padding-top: 4rem;
+    }
+}
+
 /* About section */
 .about {
     color: #19375e;
@@ -139,6 +188,38 @@ nav.light-text a:hover {
     display: flex;
     gap: 4rem;
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        gap: 2rem;
+        padding: 4rem 1rem 2rem;
+    }
+    
+    .about-image {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .about-text {
+        width: 100%;
+    }
+    
+    .about-title {
+        font-size: 2rem;
+    }
+    
+    .about-description {
+        font-size: 1rem;
+    }
+    
+    .skills-grid {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 }
 
 .about-image {
@@ -231,6 +312,72 @@ nav.light-text a:hover {
     align-items: center;
     padding: 3rem;
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .projects {
+        padding: 1rem;
+    }
+    
+    .projects-container {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        padding: 1.5rem 1rem;
+    }
+    
+    .projects-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .projects-content {
+        padding: 1rem;
+        min-height: 70vh;
+    }
+    
+    .carousel-wrapper {
+        height: 60%;
+        min-height: 400px;
+    }
+    
+    .project-card {
+        flex-direction: column;
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+        gap: 1.5rem;
+    }
+    
+    .project-image {
+        width: 100%;
+        max-width: 250px;
+        height: 180px;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .project-title {
+        font-size: 1.5rem;
+    }
+    
+    .project-description {
+        font-size: 1rem;
+    }
+    
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .carousel-prev {
+        margin-left: 0.5rem;
+    }
+    
+    .carousel-next {
+        margin-right: 0.5rem;
+    }
 }
 
 .projects-title {
@@ -479,6 +626,32 @@ nav.light-text a:hover {
     height: 100%;
 }
 
+@media (max-width: 768px) {
+    .project-expanded {
+        padding: 1rem;
+    }
+    
+    .project-expanded-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+    }
+    
+    .project-expanded-image {
+        width: 100%;
+        max-width: 100%;
+        height: 250px;
+    }
+    
+    .project-expanded-title {
+        font-size: 1.8rem;
+    }
+    
+    .project-expanded-description {
+        font-size: 0.95rem;
+    }
+}
+
 .project-expanded-image {
     width: 400px;
     height: 300px;
@@ -593,4 +766,66 @@ nav.light-text a:hover {
     color: #0D224D;
     opacity: 0.8;
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .contact {
+        padding: 1rem;
+    }
+    
+    .contact-content {
+        width: 100%;
+        gap: 2rem;
+        padding: 4rem 1rem 2rem;
+    }
+    
+    .contact-title {
+        font-size: 2rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .contact-info {
+        gap: 1.5rem;
+    }
+    
+    .contact-item {
+        padding-bottom: 1rem;
+    }
+    
+    .contact-label {
+        font-size: 0.8rem;
+    }
+    
+    .contact-value {
+        font-size: 1rem;
+    }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 18vw;
+        margin-top: 10vh;
+    }
+    
+    .hero-tagline {
+        font-size: 1rem;
+    }
+    
+    .about-title {
+        font-size: 1.5rem;
+    }
+    
+    .projects-title {
+        font-size: 1.5rem;
+    }
+    
+    .contact-title {
+        font-size: 1.5rem;
+    }
+    
+    nav a {
+        font-size: 0.9rem;
+        margin-left: 0.75rem;
+    }
 }
