@@ -29,11 +29,20 @@ nav a {
     text-decoration: none;
     margin-left: 2rem;
     font-size: 1.3rem;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 nav a:hover {
     opacity: 0.7;
+}
+
+/* Light text for navbar when over dark background */
+nav.light-text a {
+    color: #ffffff;
+}
+
+nav.light-text a:hover {
+    opacity: 0.8;
 }
 
 .logo {
@@ -372,6 +381,26 @@ nav a:hover {
     border-radius: 8px;
     margin-right: 2rem;
     flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.rotating-image {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.rotating-image:hover {
+    opacity: 0.9;
 }
 
 .project-info {
@@ -456,6 +485,17 @@ nav a:hover {
     background: #c4c4c4;
     border-radius: 12px;
     flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-expanded-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
 .project-expanded-info {
@@ -482,4 +522,75 @@ nav a:hover {
 /* Contact section */
 .contact {
     color: #19375e;
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-content {
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.contact-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-family: "Inter", sans-serif;
+    color: #19375e;
+    letter-spacing: 0.3em;
+}
+
+.contact-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(25, 55, 94, 0.2);
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.contact-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #19375e;
+    font-family: "Inter", sans-serif;
+    margin: 0;
+}
+
+.contact-value {
+    font-size: 1.2rem;
+    color: #000;
+    font-family: "Krub", sans-serif;
+    margin: 0;
+}
+
+.contact-value a {
+    color: #19375e;
+    text-decoration: none;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.contact-value a:hover {
+    color: #0D224D;
+    opacity: 0.8;
+    text-decoration: underline;
 }

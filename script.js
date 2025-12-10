@@ -138,14 +138,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Project card click functionality
     projectCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function(e) {
+            // Don't open expanded view if clicking on a rotating image
+            if (e.target.classList.contains('rotating-image')) {
+                return;
+            }
             const projectId = this.getAttribute('data-project');
             openExpandedProject(projectId);
         });
     });
     
+    // Rotating image click to pause/resume rotation for that specific project
+    const rotatingImageElements = document.querySelectorAll('.rotating-image');
+    rotatingImageElements.forEach(img => {
+        img.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent triggering project card click
+            const projectId = parseInt(this.getAttribute('data-project'));
+            toggleProjectRotation(projectId);
+        });
+    });
+    
     // Initialize carousel
     updateCarousel();
+    
+    // Initialize all project image rotations
+    startAllRotations();
 });
 
 function openExpandedProject(projectId) {
@@ -173,12 +190,35 @@ function closeExpandedProject() {
 // Initialize gradients
 updateGradients();
 
+// Update navbar text color based on current section
+updateNavbarColor();
+function updateNavbarColor() {
+    const navbar = document.getElementById('navbar');
+    const scrollTop = scrollWrapper.scrollTop;
+    const viewportHeight = window.innerHeight;
+    
+    // Find which section is currently in view
+    const projectsSection = document.getElementById('projects');
+    const projectsTop = projectsSection.offsetTop;
+    const projectsBottom = projectsTop + viewportHeight;
+    
+    // Check if projects section is visible (with some threshold for smooth transition)
+    const isProjectsVisible = scrollTop >= projectsTop - viewportHeight * 0.5 && scrollTop < projectsBottom;
+    
+    if (isProjectsVisible) {
+        navbar.classList.add('light-text');
+    } else {
+        navbar.classList.remove('light-text');
+    }
+}
+
 // Update gradients on scroll with throttling for performance
 let ticking = false;
 scrollWrapper.addEventListener('scroll', function() {
     if (!ticking) {
         requestAnimationFrame(function() {
             updateGradients();
+            updateNavbarColor();
             ticking = false;
         });
         ticking = true;
@@ -186,4 +226,59 @@ scrollWrapper.addEventListener('scroll', function() {
 });
 
 // Update on window resize
-window.addEventListener('resize', updateGradients);
+window.addEventListener('resize', function() {
+    updateGradients();
+    updateNavbarColor();
+});
+
+// Project image rotation system
+const projectImages = {
+    1: ['images/FlowField1.png', 'images/FlowField2.png'], // FlowField
+    2: ['images/communityGraph1.png', 'images/communityGraph2.png'], // Community Graph
+    3: ['images/ColorCorrect1.png', 'images/ColorCorrect2.png'], // Color-Correct
+    4: ['images/MortgageCalculator1.png', 'images/MortgageCalculator2.png'] // Mortgage Calculator
+};
+
+const projectRotationStates = {
+    1: { paused: false },
+    2: { paused: false },
+    3: { paused: false },
+    4: { paused: false }
+};
+
+let rotationInterval = null;
+
+function rotateProjectImages(projectId) {
+    if (projectRotationStates[projectId].paused) {
+        return;
+    }
+    const images = document.querySelectorAll(`.rotating-image[data-project="${projectId}"]`);
+    const imageArray = projectImages[projectId];
+    images.forEach(img => {
+        const currentIndex = parseInt(img.getAttribute('data-image-index')) || 0;
+        const nextIndex = (currentIndex + 1) % imageArray.length;
+        img.src = imageArray[nextIndex];
+        img.setAttribute('data-image-index', nextIndex);
+    });
+}
+
+function rotateAllProjectImages() {
+    Object.keys(projectImages).forEach(projectId => {
+        rotateProjectImages(parseInt(projectId));
+    });
+}
+
+function startAllRotations() {
+    if (rotationInterval) {
+        clearInterval(rotationInterval);
+    }
+    Object.keys(projectRotationStates).forEach(projectId => {
+        projectRotationStates[projectId].paused = false;
+    });
+    rotationInterval = setInterval(rotateAllProjectImages, 2000);
+}
+
+function toggleProjectRotation(projectId) {
+    const state = projectRotationStates[projectId];
+    state.paused = !state.paused;
+}
