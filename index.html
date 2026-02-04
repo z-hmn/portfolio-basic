@@ -17,8 +17,8 @@
 <a href="#hero" class="logo">Zoe Homan</a>
 </div>
 <div class="nav-right">
-<a href="#projects">Projects</a>
 <a href="#about">About</a>
+<a href="#projects">Projects</a>
 <a href="#contact">Contact</a>
 </div>
 </nav>
@@ -43,8 +43,7 @@
 <div class="about-text">
 <h2 class="about-title">ABOUT ME</h2>
 <p class="about-description">
-I'm a junior at Barnard College studying computer science and architecture, exploring how technology and design can shape urban environments. I work at the intersection of technology, cities, and community impact—using code, data, and design to imagine better futures. I'm eager to contribute to projects where technology and creativity meet.
-</p>
+I’m a junior at Barnard College studying Computer Science and Architecture with a focus on design, human-computer interaction, and user-centered thinking. My work explores how technology can support creativity and make complex ideas intuitive through thoughtful interfaces and spatial tools. I’m especially interested in designing interactive experiences that combine code, design, and an understanding of how people engage with digital and physical environments.</p>
 <div class="skills-section">
 <h3>Skills:</h3>
 <div class="skills-grid">
@@ -55,15 +54,17 @@ I'm a junior at Barnard College studying computer science and architecture, expl
 <li>C</li>
 <li>HTML/CSS</li>
 <li>React</li>
+<li>Swift</li>
 </ul>
 </div>
 <div class="skills-column">
 <ul>
-<li>Rhino</li>
 <li>ArcGIS</li>
 <li>Adobe Illustrator</li>
 <li>Adobe Photoshop</li>
 <li>Adobe InDesign</li>
+<li>Figma</li>
+<li>Rhino</li>
 </ul>
 </div>
 </div>
@@ -78,7 +79,40 @@ I'm a junior at Barnard College studying computer science and architecture, expl
 <div class="carousel-container">
 <div class="carousel-wrapper">
 <div class="carousel-slides" id="carouselSlides">
-<div class="project-card active" data-project="2">
+<div class="project-card active" data-project="1">
+<div class="project-image">
+<img src="images/ColorCorrect1.png" alt="Color-Correct project" class="rotating-image" data-project="3" data-image-index="0">
+</div>
+<div class="project-info">
+<h3 class="project-title">Color-Correct</h3>
+<p class="project-description">An educational web app that teaches basic photo editing concepts through interactive sliders and real-time visual feedback. Built with Flask, HTML, JavaScript, and custom image-processing logic.</p>
+<a class="project-link" href="https://github.com/z-hmn/Color-Correct" target="_blank">see more</a>
+</div>
+</div>
+
+<div class="project-card" data-project="3">
+<div class="project-image">
+<img src="images/MortgageCalculator1.png" alt="Mortgage Calculator project" class="rotating-image" data-project="4" data-image-index="0">
+</div>
+<div class="project-info">
+<h3 class="project-title">Mortgage Calculator</h3>
+<p class="project-description">A Swift-based mortgage calculator built during the Bank of America × Girls Who Code program, designed in Figma and implemented with a clean, modular UI in Swift.</p>
+<a class="project-link" href="https://github.com/ameliagrullon/GWC_Mortgage_Calculator_iOS_Team-13" target="_blank">see more</a>
+</div>
+</div>
+
+<div class="project-card" data-project="5">
+<div class="project-image">
+<img src="images/storymap1.png" alt="Spatial Analysis project" class="rotating-image" data-project="5" data-image-index="0">
+</div>
+<div class="project-info">
+<h3 class="project-title">Spatial Analysis of Environmental Hazards and U.S Prisons</h3>
+<p class="project-description">This project investigates the geographic relationship between U.S. prisons and nearby toxic sites using ArcGIS Pro, spatial statistical analysis, and Python-driven workflows. By mapping patterns of environmental risk around carceral spaces, complex geospatial data was translated into an interactive web map and narrative story.</p>
+<a class="project-link" href="https://storymaps.arcgis.com/stories/9a0e02421dd0433da79e6d6418da2587" target="_blank">see more</a>
+</div>
+</div>
+
+<div class="project-card" data-project="2">
 <div class="project-image">
 <img src="images/FlowField1.png" alt="Flow Field project" class="rotating-image" data-project="1" data-image-index="0">
 </div>
@@ -99,28 +133,6 @@ I'm a junior at Barnard College studying computer science and architecture, expl
 <a class="project-link" href="https://github.com/z-hmn/MathOverflow-Community-Detection" target="_blank">see more</a>
 </div>
 </div>
-
-<div class="project-card" data-project="1">
-<div class="project-image">
-<img src="images/ColorCorrect1.png" alt="Color-Correct project" class="rotating-image" data-project="3" data-image-index="0">
-</div>
-<div class="project-info">
-<h3 class="project-title">Color-Correct</h3>
-<p class="project-description">An educational web app that teaches basic photo editing concepts through interactive sliders and real-time visual feedback. Built with Flask, HTML, JavaScript, and custom image-processing logic.</p>
-<a class="project-link" href="https://github.com/z-hmn/Color-Correct" target="_blank">see more</a>
-</div>
-</div>
-
-<div class="project-card" data-project="3">
-<div class="project-image">
-<img src="images/MortgageCalculator1.png" alt="Mortgage Calculator project" class="rotating-image" data-project="4" data-image-index="0">
-</div>
-<div class="project-info">
-<h3 class="project-title">Mortgage Calculator</h3>
-<p class="project-description">A Swift-based mortgage calculator built during the Bank of America × Girls Who Code program, designed in Figma and implemented with a clean, modular UI in Xcode.</p>
-<a class="project-link" href="https://github.com/ameliagrullon/GWC_Mortgage_Calculator_iOS_Team-13" target="_blank">see more</a>
-</div>
-</div>
 </div>
 </div>
 
@@ -134,83 +146,11 @@ I'm a junior at Barnard College studying computer science and architecture, expl
 <div class="dot" data-slide="1"></div>
 <div class="dot" data-slide="2"></div>
 <div class="dot" data-slide="3"></div>
-</div>
-</div>
-
-<!-- Expanded project views -->
-<div class="project-expanded" id="expandedProject1">
-<div class="project-header">
-<span class="back-button" onclick="closeExpandedProject()">go back</span>
-<span class="close-button" onclick="closeExpandedProject()">&times;</span>
-</div>
-<div class="project-expanded-content">
-<div class="project-expanded-image">
-<img src="images/FlowField1.png" alt="FlowField project" class="rotating-image" data-project="1" data-image-index="0">
-</div>
-<div class="project-expanded-info">
-<h2 class="project-expanded-title">FlowField</h2>
-<p class="project-expanded-description">
-This is a detailed description of Project One. Here you can provide comprehensive information about the project, including the technologies used, the problem it solves, your development process, challenges faced, and key features implemented. You can also mention any notable achievements, user feedback, or future improvements planned for this project. This expanded view allows you to showcase your work in detail and demonstrate your technical skills and problem-solving abilities.
-</p>
-</div>
-</div>
-</div>
-
-<div class="project-expanded" id="expandedProject2">
-<div class="project-header">
-<span class="back-button" onclick="closeExpandedProject()">go back</span>
-<span class="close-button" onclick="closeExpandedProject()">&times;</span>
-</div>
-<div class="project-expanded-content">
-<div class="project-expanded-image">
-<img src="images/communityGraph1.png" alt="Community Graph project" class="rotating-image" data-project="2" data-image-index="0">
-</div>
-<div class="project-expanded-info">
-<h2 class="project-expanded-title">Community Graph</h2>
-<p class="project-expanded-description">
-This is a detailed description of Project Two. You can elaborate on the specific challenges this project addressed, the methodology you employed, and the impact it had. Include information about the target audience, the development timeline, key milestones, and any collaborative aspects if it was a team project. This section can also highlight specific technical implementations, architectural decisions, or innovative approaches you used.
-</p>
-</div>
-</div>
-</div>
-
-<div class="project-expanded" id="expandedProject3">
-<div class="project-header">
-<span class="back-button" onclick="closeExpandedProject()">go back</span>
-<span class="close-button" onclick="closeExpandedProject()">&times;</span>
-</div>
-<div class="project-expanded-content">
-<div class="project-expanded-image">
-<img src="images/ColorCorrect1.png" alt="Color-Correct project" class="rotating-image" data-project="3" data-image-index="0">
-</div>
-<div class="project-expanded-info">
-<h2 class="project-expanded-title">Color-Correct</h2>
-<p class="project-expanded-description">
-This is a detailed description of Project Three. Focus on what makes this project unique and how it demonstrates your growth as a developer. You can discuss the inspiration behind the project, the research phase, design decisions, and the development process. Include any metrics or results that showcase the project's success, user engagement, or technical performance improvements.
-</p>
-</div>
-</div>
-</div>
-
-<div class="project-expanded" id="expandedProject4">
-<div class="project-header">
-<span class="back-button" onclick="closeExpandedProject()">go back</span>
-<span class="close-button" onclick="closeExpandedProject()">&times;</span>
-</div>
-<div class="project-expanded-content">
-<div class="project-expanded-image">
-<img src="images/MortgageCalculator1.png" alt="Mortgage Calculator project" class="rotating-image" data-project="4" data-image-index="0">
-</div>
-<div class="project-expanded-info">
-<h2 class="project-expanded-title">Mortgage Calculator</h2>
-<p class="project-expanded-description">
-This is a detailed description of Project Four. Highlight the most challenging aspects of this project and how you overcame them. Discuss any new technologies or frameworks you learned while building it, and how this project contributed to your professional development. You can also mention any awards, recognition, or positive feedback the project received, as well as lessons learned and skills gained.
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="dot" data-slide="4"></div>
+    </div>
+    </div>
+    </div>
+    </div>
 </section>
 <section id="contact" class="scroll-section contact">
 <div class="contact-content">

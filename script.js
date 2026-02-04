@@ -84,7 +84,7 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
 
 // Carousel functionality
 let currentSlide = 0;
-const totalSlides = 4;
+const totalSlides = 5;
 
 function updateCarousel() {
     const slides = document.getElementById('carouselSlides');
@@ -136,18 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dot.addEventListener('click', () => goToSlide(index));
     });
     
-    // Project card click functionality
-    projectCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Don't open expanded view if clicking on a rotating image
-            if (e.target.classList.contains('rotating-image')) {
-                return;
-            }
-            const projectId = this.getAttribute('data-project');
-            openExpandedProject(projectId);
-        });
-    });
-    
     // Rotating image click to pause/resume rotation for that specific project
     const rotatingImageElements = document.querySelectorAll('.rotating-image');
     rotatingImageElements.forEach(img => {
@@ -165,33 +153,14 @@ document.addEventListener('DOMContentLoaded', function() {
     startAllRotations();
 });
 
-function openExpandedProject(projectId) {
-    // Hide the carousel
-    const carouselContainer = document.querySelector('.carousel-container');
-    carouselContainer.style.display = 'none';
-    
-    // Show the expanded project
-    const expandedProject = document.getElementById(`expandedProject${projectId}`);
-    expandedProject.classList.add('active');
-}
-
-function closeExpandedProject() {
-    // Hide all expanded projects
-    const expandedProjects = document.querySelectorAll('.project-expanded');
-    expandedProjects.forEach(project => {
-        project.classList.remove('active');
-    });
-    
-    // Show the carousel
-    const carouselContainer = document.querySelector('.carousel-container');
-    carouselContainer.style.display = 'flex';
-}
-
 // Initialize gradients
 updateGradients();
 
 // Update navbar text color based on current section
 updateNavbarColor();
+
+// Initialize active nav link
+updateActiveNavLink();
 function updateNavbarColor() {
     const navbar = document.getElementById('navbar');
     const scrollTop = scrollWrapper.scrollTop;
@@ -212,6 +181,47 @@ function updateNavbarColor() {
     }
 }
 
+// Update active navbar link based on current section
+function updateActiveNavLink() {
+    const scrollTop = scrollWrapper.scrollTop;
+    const viewportHeight = window.innerHeight;
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    
+    // Remove active class from all links
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Determine which section is currently in view
+    sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + viewportHeight;
+        const sectionId = section.id;
+        
+        // Check if section is in view (with some threshold)
+        if (scrollTop >= sectionTop - viewportHeight * 0.3 && scrollTop < sectionBottom - viewportHeight * 0.3) {
+            // Find and activate the corresponding nav link
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+    
+    // Special case for hero section at the very top
+    if (scrollTop < viewportHeight * 0.5) {
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === '#hero') {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+}
+
 // Update gradients on scroll with throttling for performance
 let ticking = false;
 scrollWrapper.addEventListener('scroll', function() {
@@ -219,6 +229,7 @@ scrollWrapper.addEventListener('scroll', function() {
         requestAnimationFrame(function() {
             updateGradients();
             updateNavbarColor();
+            updateActiveNavLink();
             ticking = false;
         });
         ticking = true;
@@ -229,6 +240,7 @@ scrollWrapper.addEventListener('scroll', function() {
 window.addEventListener('resize', function() {
     updateGradients();
     updateNavbarColor();
+    updateActiveNavLink();
 });
 
 // Project image rotation system
@@ -236,14 +248,16 @@ const projectImages = {
     1: ['images/FlowField1.png', 'images/FlowField2.png'], // FlowField
     2: ['images/communityGraph1.png', 'images/communityGraph2.png'], // Community Graph
     3: ['images/ColorCorrect1.png', 'images/ColorCorrect2.png'], // Color-Correct
-    4: ['images/MortgageCalculator1.png', 'images/MortgageCalculator2.png'] // Mortgage Calculator
+    4: ['images/MortgageCalculator1.png', 'images/MortgageCalculator2.png'], // Mortgage Calculator
+    5: ['images/storymap1.png', 'images/storymap2.png'] // Spatial Analysis
 };
 
 const projectRotationStates = {
     1: { paused: false },
     2: { paused: false },
     3: { paused: false },
-    4: { paused: false }
+    4: { paused: false },
+    5: { paused: false }
 };
 
 let rotationInterval = null;
