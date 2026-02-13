@@ -618,6 +618,14 @@ nav.light-text a.active {
     margin-bottom: 1.5rem;
 }
 
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    align-items: center;
+    margin-top: 0.25rem;
+}
+
 .project-link {
     color: #0a1f44;
     text-decoration: underline;
