@@ -1,5 +1,9 @@
 {
   "private": true,
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "watch": "npx --yes live-server --port=8000"
+  },
   "dependencies": {
     "@vercel/edge": "^0.1.2"
   }

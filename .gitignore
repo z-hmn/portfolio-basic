@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Vercel CLI (created by `vercel link`; contains project/org IDs)
+.vercel
+
+# Editor
+.vscode/
+.idea/
+*.swp
