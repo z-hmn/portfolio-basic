@@ -15,3 +15,7 @@ yarn-error.log*
 .vscode/
 .idea/
 *.swp
+
+# Full-resolution project sources. The site ships the derivatives in
+# images/work/ instead, so these stay local.
+PortfolioImages/
