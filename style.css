@@ -809,6 +809,7 @@ p:last-child { margin-bottom: 0; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(0.75rem, 2vw, 1.75rem);
   align-items: stretch;
+  margin-bottom: clamp(1.75rem, 3.5vw, 3rem);
 }
 
 /* Let side-by-side media boxes share a row height so the captions align even
@@ -898,7 +899,7 @@ p:last-child { margin-bottom: 0; }
 .pull__attr { margin-top: 1rem; }
 
 /* Findings list */
-.findings { display: grid; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule-soft); }
+.findings { display: grid; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule-soft); margin-top: clamp(1.5rem, 3vw, 2.25rem); }
 
 .findings__item { background: var(--paper); padding: 1.1rem 1.25rem 1.25rem; }
 
