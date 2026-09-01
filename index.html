@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script defer src="/_vercel/insights/script.js"></script>
 <title>Zoe Homan — Computational Design &amp; Spatial Analysis</title>
-<meta name="description" content="Zoe Homan is a computer science student at Barnard College working across computational design, spatial analysis, and human-computer interaction — building models, maps, and interfaces that make complex systems legible." />
+<meta name="description" content="Zoe Homan is a computer science student at Barnard College working in computational design, spatial analysis, and human-computer interaction." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -21,7 +21,6 @@
     <a class="topbar__name" href="index.html">Zoe Homan</a>
     <span class="topbar__meta">Computational Design &middot; Spatial Analysis &middot; HCI</span>
     <nav class="topbar__nav">
-      <a href="#about">About</a>
       <a href="#work">Work</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -30,214 +29,163 @@
 
 <main id="main">
 
-  <!-- ============================================================ HERO -- -->
-  <section class="hero">
-    <div class="hero__grid" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <div class="shell hero__inner">
-      <div class="hero__eyebrow">
-        <span class="label label--green">Portfolio 2026</span>
-      </div>
+  <!-- ======================================================== MASTHEAD -- -->
+  <section class="shell mast">
+    <div class="mast__top">
+      <div>
+        <div class="mast__eyebrow"><span class="label label--green">Portfolio 2026</span></div>
+        <h1 class="mast__name">Zoe Homan</h1>
+        <p class="mast__role">Computational design &middot; Spatial analysis &middot; Human&#8209;computer interaction</p>
 
-      <h1 class="hero__name">Zoe<br />Homan</h1>
-
-      <div class="hero__lede">
-        <p class="hero__statement">
-          I use computation to ask questions about <em>systems</em> — how we model
-          space, represent infrastructure, and design the tools that mediate both.
-        </p>
-        <div class="hero__bio">
+        <div class="mast__bio">
           <p>
-            Computer science major and architecture minor at Barnard College,
-            working across computational design, spatial analysis, and
-            human&#8209;computer interaction.
+            Computer science major and architecture minor at Barnard College. I build
+            spatial models, research interfaces, and machine learning systems, and I
+            do the analysis and visual communication that go with them.
           </p>
           <p>
-            My work spans network modeling of urban infrastructure, AI-assisted
-            design tools, and machine learning for graphics — connected by an
-            interest in how models, maps, and interfaces decide what becomes
-            visible and actionable.
+            Across GIS modeling, AI tool design, and graphics, my projects converge on
+            one question: <strong>what a representation makes visible, and what it
+            leaves out.</strong> I report that as a finding in its own right.
           </p>
         </div>
       </div>
+
+      <figure class="mast__portrait">
+        <img src="images/profile/zoe-homan.jpg" alt="Portrait of Zoe Homan" width="900" height="1125" />
+        <figcaption>Barnard College &rsquo;27 &middot; New York</figcaption>
+      </figure>
     </div>
-  </section>
 
-  <!-- =========================================================== ABOUT -- -->
-  <section class="section section--tight" id="about">
-    <div class="shell">
-      <div class="section__head reveal">
-        <span class="section__num">01 — About</span>
-        <h2 class="section__title">Representation,<br />interpretation, decision.</h2>
+    <dl class="mast__skills">
+      <div>
+        <dt>Languages</dt>
+        <dd>Python &middot; JavaScript &middot; HTML/CSS</dd>
       </div>
-
-      <div class="about reveal">
-        <figure class="about__portrait" style="margin:0">
-          <img src="images/profile/zoe-homan.jpg" alt="Portrait of Zoe Homan" width="900" height="1125" loading="lazy" />
-          <figcaption class="about__caption">Zoe Homan — Barnard College &rsquo;27</figcaption>
-        </figure>
-
-        <div class="about__body">
-          <p>
-            A recurring theme in my work is that computational systems do not
-            describe the world neutrally &mdash; <strong>they structure how it is
-            interpreted.</strong> That holds whether the system is a routing model
-            over a street network, an interface guiding a novice programmer, or a
-            neural network inferring light in a scene.
-          </p>
-          <p>
-            Networks are my strongest intellectual interest: the way physical,
-            social, infrastructural, and digital networks overlap, and what is
-            gained or lost when messy spatial and social relationships are
-            translated into graphs, routes, and optimization problems.
-          </p>
-          <p>
-            I approach this from a liberal arts perspective rather than treating
-            computation as a purely technical exercise. I care about who a dataset
-            represents, whose experience gets abstracted away, and how design
-            choices shape the decisions people are able to make. I don&rsquo;t see
-            technical rigor and social awareness as competing goals &mdash; the
-            strongest work needs both.
-          </p>
-        </div>
-
-        <div class="about__aside">
-          <dl class="skills">
-            <div class="skills__row">
-              <dt>Languages</dt>
-              <dd>Python &middot; JavaScript &middot; HTML/CSS</dd>
-            </div>
-            <div class="skills__row">
-              <dt>Spatial</dt>
-              <dd>ArcGIS Pro &middot; Network Analyst &middot; Spatial statistics (Moran&rsquo;s I, Lee&rsquo;s L) &middot; Cartographic design</dd>
-            </div>
-            <div class="skills__row">
-              <dt>ML &amp; Graphics</dt>
-              <dd>PyTorch &middot; CNNs / U&#8209;Net &middot; AWS GPU training &middot; NumPy &middot; SciPy &middot; pandas</dd>
-            </div>
-            <div class="skills__row">
-              <dt>Interface</dt>
-              <dd>React &middot; Figma &middot; Prototyping &middot; User testing &middot; Prompt design</dd>
-            </div>
-            <div class="skills__row">
-              <dt>Methods</dt>
-              <dd>Network analysis &middot; Spatial modeling &middot; Design research &middot; Data visualization</dd>
-            </div>
-            <div class="skills__row">
-              <dt>Interests</dt>
-              <dd>Urban analytics &middot; Design technology &middot; Infrastructure &middot; Human&#8209;AI interaction</dd>
-            </div>
-          </dl>
-        </div>
+      <div>
+        <dt>Spatial</dt>
+        <dd>ArcGIS Pro &middot; Network Analyst &middot; Spatial statistics &middot; Cartography</dd>
       </div>
-    </div>
+      <div>
+        <dt>ML &amp; Graphics</dt>
+        <dd>PyTorch &middot; CNNs / U&#8209;Net &middot; AWS GPU training &middot; NumPy &middot; pandas</dd>
+      </div>
+      <div>
+        <dt>Interface</dt>
+        <dd>React &middot; Figma &middot; Prototyping &middot; User testing &middot; Prompt design</dd>
+      </div>
+      <div>
+        <dt>Methods</dt>
+        <dd>Network analysis &middot; Spatial modeling &middot; Design research &middot; Data visualization</dd>
+      </div>
+    </dl>
   </section>
 
   <!-- ============================================================ WORK -- -->
-  <section class="section" id="work">
-    <div class="shell">
-      <div class="section__head reveal">
-        <span class="section__num">02 — Selected Work</span>
-        <h2 class="section__title">Four projects, one<br />recurring question.</h2>
+  <section class="shell section section--flush" id="work">
+    <div class="head">
+      <div>
+        <span class="head__num">Selected work</span>
+        <h2 class="head__title">Three projects</h2>
       </div>
+      <p class="head__deck">
+        A spatial model of an infrastructure system, an AI feature for novice
+        programmers, and a neural network trained to predict light.
+      </p>
+    </div>
 
-      <div class="work">
+    <div class="work">
 
-        <!-- 01 — Waste Transport -->
-        <a class="card reveal" href="work/waste-transport.html">
-          <div class="card__frame">
-            <span class="card__index">01</span>
-            <img src="images/work/waste/card.jpg" alt="Modeled waste transport routes threading across New York City toward black disposal-site markers" width="1000" height="720" loading="lazy" />
-          </div>
-          <div class="card__meta">
-            <span>GIS &amp; Network Analysis</span>
-            <span>Spatial Statistics</span>
-            <span>2026</span>
-          </div>
-          <h3 class="card__title">Modeling Residential Waste Transportation</h3>
-          <p class="card__desc">
-            New York publishes how much waste each district produces, but not how it
-            moves. I built three competing routing models across the city&rsquo;s
-            truck network to show how a methodological assumption becomes a geography.
-          </p>
-          <span class="card__cta">Read case study</span>
-        </a>
-
-        <!-- 02 — Flowcode -->
-        <a class="card reveal" href="work/flowcode.html">
-          <div class="card__frame">
-            <span class="card__index">02</span>
-            <img src="images/work/flowcode/card.jpg" alt="The Design Suggestions widget in Flowcode, showing a generated suggestion and a 'show me how' action" width="1000" height="720" loading="lazy" />
-          </div>
-          <div class="card__meta">
-            <span>HCI Research</span>
-            <span>AI Tooling</span>
-            <span>2026</span>
-          </div>
-          <h3 class="card__title">Design Suggestions for Flowcode</h3>
-          <p class="card__desc">
-            An AI feature that helps novice programmers find their next creative move
-            without taking the decision away from them. Designed, built in React, and
-            evaluated with eleven K&#8209;8 educators.
-          </p>
-          <span class="card__cta">Read case study</span>
-        </a>
-
-        <!-- 03 — Neural Shading -->
-        <a class="card reveal" href="work/neural-shading.html">
-          <div class="card__frame">
-            <span class="card__index">03</span>
-            <img src="images/work/neural-shading/card.jpg" alt="A photorealistic rendered interior from the Hypersim dataset: a loft with exposed steel framing, a spiral staircase, brick wall and hanging plants" width="1200" height="820" loading="lazy" />
-          </div>
-          <div class="card__meta">
-            <span>Machine Learning</span>
-            <span>Computer Graphics</span>
-            <span>2026</span>
-          </div>
-          <h3 class="card__title">Neural Shading for Architectural Scenes</h3>
-          <p class="card__desc">
-            A U&#8209;Net trained to predict diffuse illumination from geometric and
-            material buffers. It learned the shape of the light and never learned a
-            shadow &mdash; and the reason why is the finding.
-          </p>
-          <span class="card__cta">Read case study</span>
-        </a>
-
-        <!-- 04 — placeholder -->
-        <div class="card card--soon reveal">
-          <div class="card__frame">
-            <span class="card__index">04</span>
-            <span class="card__soon">In preparation</span>
-          </div>
-          <div class="card__meta">
-            <span>Forthcoming</span>
-          </div>
-          <h3 class="card__title">Additional Work</h3>
-          <p class="card__desc">
-            Further projects in computational design, spatial analysis, and interface
-            research are being documented.
-          </p>
+      <!-- 01 — Waste Transport -->
+      <a class="card reveal" href="work/waste-transport.html">
+        <div class="card__frame">
+          <span class="card__index">01</span>
+          <img src="images/work/waste/card.jpg" alt="Modeled waste transport routes threading across New York City toward black disposal-site markers" width="1000" height="720" />
         </div>
+        <div class="card__meta">
+          <span>GIS &amp; Network Analysis</span>
+          <span>Spatial Statistics</span>
+          <span>2026</span>
+        </div>
+        <h3 class="card__title">Modeling Residential Waste Transportation</h3>
+        <p class="card__desc">
+          New York reports how much waste each district produces, but not how it moves.
+          Three routing models over the city&rsquo;s truck network, compared to show how
+          a modeling assumption becomes a geography.
+        </p>
+        <span class="card__cta">Case study</span>
+      </a>
 
+      <!-- 02 — Flowcode -->
+      <a class="card reveal" href="work/flowcode.html">
+        <div class="card__frame">
+          <span class="card__index">02</span>
+          <img src="images/work/flowcode/card.jpg" alt="The Design Suggestions widget in Flowcode, showing a generated suggestion and a 'show me how' action" width="1000" height="720" />
+        </div>
+        <div class="card__meta">
+          <span>HCI Research</span>
+          <span>AI Tooling</span>
+          <span>2026</span>
+        </div>
+        <h3 class="card__title">Design Suggestions for Flowcode</h3>
+        <p class="card__desc">
+          An AI feature that helps novice programmers find a next move without deciding
+          it for them. Designed and built in React, then evaluated with eleven
+          K&#8209;8 educators.
+        </p>
+        <span class="card__cta">Case study</span>
+      </a>
+
+      <!-- 03 — Neural Shading -->
+      <a class="card reveal" href="work/neural-shading.html">
+        <div class="card__frame">
+          <span class="card__index">03</span>
+          <img src="images/work/neural-shading/card.jpg" alt="A photorealistic rendered interior from the Hypersim dataset: a loft with exposed steel framing, a spiral staircase, brick wall and hanging plants" width="1200" height="820" />
+        </div>
+        <div class="card__meta">
+          <span>Machine Learning</span>
+          <span>Computer Graphics</span>
+          <span>2026</span>
+        </div>
+        <h3 class="card__title">Neural Shading for Architectural Scenes</h3>
+        <p class="card__desc">
+          A U&#8209;Net trained to predict interior illumination from geometry and
+          material. It learned the soft structure of light and never learned a shadow.
+          Diagnosing why is the result.
+        </p>
+        <span class="card__cta">Case study</span>
+      </a>
+
+      <!-- 04 — placeholder -->
+      <div class="card card--soon reveal">
+        <div class="card__frame">
+          <span class="card__index">04</span>
+          <span class="card__soon">In preparation</span>
+        </div>
+        <div class="card__meta">
+          <span>Forthcoming</span>
+        </div>
+        <h3 class="card__title">Additional Work</h3>
+        <p class="card__desc">
+          Further projects in computational design and spatial analysis are being
+          documented.
+        </p>
       </div>
+
     </div>
   </section>
 
   <!-- ========================================================= CONTACT -- -->
-  <section class="contact" id="contact">
-    <div class="shell">
-      <div class="contact__inner">
-        <div>
-          <span class="label">03 — Contact</span>
-          <h2 class="contact__title">Let&rsquo;s<br />talk.</h2>
-        </div>
-        <div class="contact__links">
-          <a href="mailto:zoe.homan@gmail.com">Email</a>
-          <a href="https://github.com/z-hmn" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://www.linkedin.com/in/zoe-homan/" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
+  <section class="shell contact" id="contact">
+    <div class="contact__inner">
+      <div>
+        <span class="label label--green">Contact</span>
+        <h2 class="contact__title">Open to 2026 roles and research.</h2>
+      </div>
+      <div class="contact__links">
+        <a href="mailto:zoe.homan@gmail.com">Email</a>
+        <a href="https://github.com/z-hmn" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/zoe-homan/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
