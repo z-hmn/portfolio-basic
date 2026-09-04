@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className += " js";</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script defer src="/_vercel/insights/script.js"></script>
+<title>Neural Shading for Architectural Scenes — Zoe Homan</title>
+<meta name="description" content="Training a U-Net to predict diffuse illumination in indoor architectural scenes from geometric and material buffers, and diagnosing why screen-space inputs cannot recover shadows." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__name" href="../index.html">Zoe Homan</a>
+    <span class="topbar__meta">03 &middot; Neural Shading &middot; ML &amp; Computer Graphics</span>
+    <nav class="topbar__nav">
+      <a href="../index.html#work" aria-current="page">Work</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================ HERO -- -->
+  <section class="shell case-hero">
+    <a class="case-hero__back" href="../index.html#work">All work</a>
+
+    <div class="case-hero__grid">
+      <div>
+        <div class="case-hero__kicker">
+          <span>03</span><span>Machine Learning</span><span>2026</span>
+        </div>
+
+        <h1 class="case-hero__title">Neural Shading for Indoor Architectural Scenes</h1>
+
+        <p class="case-hero__sub">
+          A U&#8209;Net trained to predict diffuse illumination from geometry and material
+          instead of simulating it. It recovers the soft structure of light in a room and
+          never recovers a shadow. Diagnosing that limit is the result.
+        </p>
+
+        <dl class="spec">
+          <div>
+            <dt>Type</dt>
+            <dd>Research project<br />Deep Learning for Computer Graphics</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Solo. Pipeline, model, experiments, analysis</dd>
+          </div>
+          <div>
+            <dt>Advisor</dt>
+            <dd>Prof. Corey Toler-Franklin</dd>
+          </div>
+          <div>
+            <dt>Stack</dt>
+            <dd>PyTorch &middot; U&#8209;Net &middot; HDF5 &middot; AWS (Tesla T4)</dd>
+          </div>
+          <div>
+            <dt>Data</dt>
+            <dd>Hypersim. ~2,000 samples, 10 scenes, 80/20 split</dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="fig" style="margin-bottom:0">
+        <div class="fig__media fig__media--cap">
+          <img src="../images/work/neural-shading/result.jpg" alt="Eight-panel comparison: input normals, depth and reflectance buffers with ground-truth illumination on top; predicted illumination, error map, and both reconstructions below" width="1600" height="800" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 01</span>
+          <span class="fig__text">
+            <b>Best model, held-out scene.</b> Top row: input buffers and ground-truth
+            illumination. Bottom: prediction, error, and both reconstructions. The error
+            map is brightest exactly along edges and object contacts.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ====================================================== AT A GLANCE -- -->
+  <div class="shell">
+    <dl class="glance">
+      <div class="glance__item">
+        <dt>Question</dt>
+        <dd>Can a network infer diffuse illumination from local geometric and material information alone?</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Approach</dt>
+        <dd>A U&#8209;Net over seven channels of Hypersim scene buffers, with five controlled experiments across normals, loss design, and capacity.</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Result</dt>
+        <dd>Low-frequency illumination is recovered reliably. Sharp shadows never are. Capacity and loss design were ruled out by experiment, leaving the input representation.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- ============================================================= NAV -- -->
+  <nav class="casenav" id="casenav">
+    <div class="casenav__inner">
+      <a href="#premise">Premise</a>
+      <a href="#data">Data</a>
+      <a href="#model">Model</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#result">Result</a>
+      <a href="#diagnosis">Diagnosis</a>
+      <a href="#outcome">Outcome</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- ======================================================= PREMISE -- -->
+    <section class="section section--flush" id="premise">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">01</span>
+          <h2 class="head__title">Premise</h2>
+        </div>
+        <p class="head__deck">
+          Illumination framed as a supervised image-to-image problem: geometry and
+          material in, light out.
+        </p>
+      </div>
+
+      <div class="cols reveal">
+        <p>
+          Physically-based rendering produces realistic light by simulating how it
+          travels, bouncing and occluding and accumulating across an entire scene. It is
+          accurate and it is slow.
+        </p>
+        <p>
+          Neural shading asks whether part of that can be learned instead. Following
+          Nalbach et al.&rsquo;s <i>Deep Shading</i>, the idea is to map per-pixel scene
+          attributes directly to appearance and skip the simulation.
+        </p>
+        <p>
+          I narrowed it to one supervised subproblem: predict diffuse illumination from
+          surface normals, depth, and diffuse reflectance. For architectural work the
+          appeal is fast, plausible interior lighting without a render farm. The
+          interesting part turned out to be where that shortcut breaks.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========================================================== DATA -- -->
+    <section class="section" id="data">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">02</span>
+          <h2 class="head__title">Data</h2>
+        </div>
+        <p class="head__deck">
+          Hypersim ships its own ground truth, which is what makes supervision possible
+          at all.
+        </p>
+      </div>
+
+      <div class="side reveal">
+        <figure class="fig" style="margin-bottom:0">
+          <div class="fig__media">
+            <img src="../images/work/neural-shading/hypersim.jpg" alt="A photorealistic rendered interior beside its per-pixel buffers: diffuse reflectance, diffuse illumination, and a non-diffuse residual" width="1280" height="608" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="fig__num">Fig. 02</span>
+            <span class="fig__text">
+              <b>One scene, many representations.</b> The model never sees the photograph
+              on the left, only the geometry and material channels.
+              <span class="fig__credit">Figure from Roberts et al., Hypersim (ICCV 2021).</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <div class="side__text">
+          <p>
+            Apple&rsquo;s Hypersim provides photorealistic synthetic interiors with dense
+            per-pixel buffers already factored into reflectance, illumination, and a
+            residual. Because the renderer knows what the illumination <em>was</em>, it
+            can serve as a training target.
+          </p>
+          <dl class="facts">
+            <div class="facts__item">
+              <dt>Inputs (7 channels)</dt>
+              <dd>Surface normals for orientation, log-scaled depth for layout, diffuse
+                reflectance for material.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>Target (3 channels)</dt>
+              <dd>Diffuse illumination, tone mapped with <code>x / (1 + x)</code> to
+                handle high dynamic range.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>Engineering note</dt>
+              <dd>Early training was slow because every epoch re-opened HDF5 files and
+                re-ran preprocessing. Caching preprocessed tensors to disk took GPU
+                utilization from intermittent to saturated, which is what made the
+                controlled experiments affordable.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= MODEL -- -->
+    <section class="section" id="model">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">03</span>
+          <h2 class="head__title">Model</h2>
+        </div>
+        <p class="head__deck">
+          Seven channels in, three channels out, then multiplied back through reflectance.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            A U&#8209;Net: the encoder steps 7&nbsp;&rarr;&nbsp;32&nbsp;&rarr;&nbsp;64&nbsp;&rarr;&nbsp;128
+            channels while halving resolution to a 256-channel bottleneck at
+            32&nbsp;&times;&nbsp;32. The decoder upsamples back, concatenating skip
+            features at each stage so high-frequency detail can cross the bottleneck.
+          </p>
+          <p>
+            The predicted illumination is then recombined with reflectance,
+            <code>reflectance &times; illumination</code>, to reconstruct diffuse
+            appearance. That recombination also becomes a loss term, and it turned out to
+            be the most important one in the project.
+          </p>
+        </div>
+
+        <figure class="fig" style="margin-bottom:0">
+          <div class="fig__media">
+            <img src="../images/work/neural-shading/architecture.png" alt="Pipeline diagram: scene buffers preprocessed and concatenated, passed through a U-Net encoder and decoder with skip connections, producing illumination that is multiplied by reflectance to reconstruct appearance" width="1600" height="898" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="fig__num">Fig. 03</span>
+            <span class="fig__text">
+              <b>The pipeline end to end.</b> Loss is computed on the illumination, the
+              reconstruction, and their gradients.
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- =================================================== EXPERIMENTS -- -->
+    <section class="section" id="experiments">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">04</span>
+          <h2 class="head__title">Experiments</h2>
+        </div>
+        <p class="head__deck">
+          Five controlled changes, one variable at a time, against the same data and the
+          same training setup.
+        </p>
+      </div>
+
+      <p class="lead txt--wide reveal" style="margin-bottom:1.25rem">
+        The baseline, plain L1 between predicted and ground-truth illumination, converged
+        numerically and produced blurry averaged light. Everything after that was an
+        attempt to find out why.
+      </p>
+
+      <div class="steps reveal">
+        <div class="steps__item">
+          <h4>Camera vs. world normals</h4>
+          <p>World-space normals gave slightly better spatial coherence. Lighting depends
+            on how a surface sits in the room rather than relative to the camera.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Reconstruction loss</h4>
+          <p>L1 on reflectance &times; illumination as well as illumination. Supervising
+            the rendered result produced the clearest improvement of the project.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Gradient loss</h4>
+          <p>Compared horizontal and vertical illumination gradients to push for sharper
+            transitions. More spatial variation, still no hard shadow boundaries.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Model capacity</h4>
+          <p>Doubled feature widths from base&#8209;32 to base&#8209;64. Optimization
+            improved marginally, visual quality did not.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Perceptual loss</h4>
+          <p>Compared reconstructions in VGG16 feature space to escape the blur pixel
+            losses reward. Slight brightness shifts, no recovery of edges.</p>
+        </div>
+      </div>
+
+      <div class="figrow figrow--2 reveal">
+        <figure>
+          <div class="fig__media">
+            <img src="../images/work/neural-shading/loss-illum.jpg" alt="Model output using illumination loss only: numerically converged but visually flat and averaged" width="1080" height="719" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>Fig. 04 &mdash; Illumination loss only</b>
+            <span>Numerically converged, visually flat.</span>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig__media">
+            <img src="../images/work/neural-shading/loss-recon.jpg" alt="Model output with reconstruction loss added: global lighting structure returns and the reconstruction tracks ground truth much more closely" width="1071" height="718" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>Fig. 05 &mdash; Plus reconstruction loss</b>
+            <span>Global structure returns and the reconstruction tracks ground truth far
+              more closely.</span>
+          </div>
+        </figure>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            Base&#8209;32 total loss drops from 0.142 to 0.070 on train and 0.118 to
+            0.068 on test over twenty epochs. Base&#8209;64 reaches a slightly lower floor
+            in fewer epochs. In both runs the two curves stay locked together, which is
+            healthy, well-behaved optimization with no overfitting.
+          </p>
+          <p>
+            And yet the images barely change. That gap is the most useful thing the
+            experiments produced: <b>the loss and the goal had come apart.</b> L1 error
+            keeps rewarding a smoother average, which is the wrong target.
+          </p>
+        </div>
+
+        <div class="figrow figrow--2" style="margin-bottom:0">
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/neural-shading/curve-base32.png" alt="Training and test loss curves for the base-32 model over twenty epochs, both falling together with no divergence" width="957" height="687" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 06 &mdash; Base-32</b>
+              <span>Twenty epochs, no divergence.</span>
+            </div>
+          </figure>
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/neural-shading/curve-base64.png" alt="Training and test loss curves for the base-64 model, reaching a lower floor in fewer epochs" width="957" height="678" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 07 &mdash; Base-64</b>
+              <span>Lower floor, visually indistinguishable output.</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== RESULT -- -->
+    <section class="section" id="result">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">05</span>
+          <h2 class="head__title">Result</h2>
+        </div>
+        <p class="head__deck">
+          Broad brightness structure is recovered. Everything high-frequency is lost.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            The best model, using world-space normals with reconstruction and gradient
+            loss, reliably recovers the broad brightness structure of a scene
+            (<a href="#main">Fig.&nbsp;01</a>). It knows which wall is brighter, roughly
+            where light falls off, and how the space is laid out. Multiplied back through
+            reflectance, the reconstruction comes genuinely close to the target.
+          </p>
+          <p>
+            What it never recovers is sharp shadows, corner darkening, occlusion
+            boundaries, and contact regions. The error map concentrates precisely on edges
+            and object contacts rather than spreading evenly, <b>which points directly at
+            what the inputs are missing.</b>
+          </p>
+        </div>
+
+        <figure class="fig" style="margin-bottom:0">
+          <div class="fig__media">
+            <img src="../images/work/neural-shading/prototype.jpg" alt="Output from the first CPU prototype on a single scene, collapsing almost entirely to a flat average" width="1400" height="708" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="fig__num">Fig. 08</span>
+            <span class="fig__text">
+              <b>The first prototype, for scale.</b> Single scene, CPU, before any of the
+              loss work. It collapsed almost entirely to a flat average, the same failure
+              mode the final model still shows, just far less subtly.
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="pull reveal">
+        <p>The loss kept improving. <em>The shadows never arrived.</em></p>
+        <span class="label pull__attr">Finding</span>
+      </div>
+    </section>
+
+    <!-- ===================================================== DIAGNOSIS -- -->
+    <section class="section" id="diagnosis">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">06</span>
+          <h2 class="head__title">Diagnosis</h2>
+        </div>
+        <p class="head__deck">
+          Illumination is a global phenomenon. The model only ever sees one
+          camera&rsquo;s screen-space slice of the room.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            A shadow exists because something the viewer may not be able to see is
+            blocking a light source the viewer may also not be able to see. Predicting one
+            requires knowing where the lights are, what the full geometry is, and what
+            occludes what.
+          </p>
+          <p>
+            The model receives none of that. It gets normals, depth, and reflectance for
+            visible pixels from a single viewpoint, with no light positions, no complete
+            3D geometry, no visibility relationships, and no multi-view context.
+            <b>Two rooms with identical visible geometry and materials but different light
+            placement produce identical inputs and different correct answers.</b>
+          </p>
+          <p>
+            Given contradictory targets for identical inputs, the optimum under an L1
+            objective is the average. The blur is the correct answer to an underdetermined
+            question, which is why no loss function and no amount of capacity fixed it.
+          </p>
+        </div>
+
+        <div class="caveat">
+          <span class="label label--green">Limitations</span>
+          <ul>
+            <li><b>Screen space only.</b> One camera, visible surfaces only. No occluded
+              geometry and no scene-level context enter the model at any point.</li>
+            <li><b>No light supervision.</b> Light source position, intensity, and
+              visibility are never provided.</li>
+            <li><b>Dataset scale.</b> Roughly 2,000 samples is small for image synthesis.
+              Scale is unlikely to be the core issue, but it has not been ruled out.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= OUTCOME -- -->
+    <section class="section" id="outcome">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">07</span>
+          <h2 class="head__title">Outcome</h2>
+        </div>
+        <p class="head__deck">
+          A model&rsquo;s ceiling is set by the information its inputs encode.
+        </p>
+      </div>
+
+      <div class="findings reveal" style="margin-top:0">
+        <div class="findings__item">
+          <h4>Optimize the consequence</h4>
+          <p>
+            Supervising the rendered result, rather than the illumination tensor alone,
+            produced the single largest visual gain of the project.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Healthy curves can mislead</h4>
+          <p>
+            Train and test fell together for twenty epochs while output quality stalled.
+            The metric and the objective had separated.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Representation sets the ceiling</h4>
+          <p>
+            Capacity, loss design, and normal frames were all ruled out by experiment.
+            What remained was the input representation itself.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:clamp(1.25rem,2.4vw,2rem)">
+        <p class="lead txt--wide">
+          The productive next step is architectural rather than numerical: give the network
+          light positions, multi-view context, or learned scene-level features, so the
+          question it is being asked has a single correct answer. Ruling out the
+          alternatives one at a time is what made that diagnosis trustworthy.
+        </p>
+      </div>
+
+      <div class="caveat reveal" style="margin-top:clamp(1.25rem,2.4vw,2rem)">
+        <span class="label label--green">References</span>
+        <ul>
+          <li>Nalbach et al., <i>Deep Shading: Convolutional Neural Networks for
+            Screen-Space Shading</i> (2017).</li>
+          <li>Roberts et al., <i>Hypersim: A Photorealistic Synthetic Dataset for Holistic
+            Indoor Scene Understanding</i> (ICCV 2021). Source of Fig.&nbsp;02 and the
+            training data.</li>
+        </ul>
+      </div>
+    </section>
+
+    <a class="pager" href="waste-transport.html">
+      <div>
+        <span class="label">Back to start &middot; 01</span>
+        <div class="pager__title">Modeling Residential Waste Transportation</div>
+      </div>
+      <span class="card__cta">Case study</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="shell footer">
+  <span>&copy; 2026 Zoe Homan</span>
+  <span>Deep Learning for Computer Graphics</span>
+  <span><a href="../index.html">Index</a></span>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

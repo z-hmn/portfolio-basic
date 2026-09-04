@@ -5,12 +5,20 @@ step. Hosted on Vercel at **<https://portfolio-basic-puce.vercel.app>**.
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | All page content and structure |
-| `style.css` | All styling |
-| `script.js` | Interactions |
-| `images/` | Project screenshots and photos |
+| `index.html` | Home page — hero, about, and the project index |
+| `work/*.html` | One long-form case study per project (e.g. `work/waste-transport.html`) |
+| `style.css` | All styling for every page, including the case-study components |
+| `script.js` | Interactions — reveal-on-scroll and case-study section tracking |
+| `images/work/` | Figures used by the case studies |
+| `images/profile/` | Portrait |
 | `middleware.js` | Vercel Edge Middleware — sets security headers on every response |
 | `package.json` | Local dev scripts only (no build, no runtime dependencies to install) |
+
+Pages link to each other with explicit `.html` extensions because `cleanUrls` is not
+enabled (there is no `vercel.json`). Keep it that way unless you add one.
+
+`PortfolioImages/` holds the full-resolution source images that the files in
+`images/work/` were derived from. It is not referenced by the site.
 
 ## Local development
 
@@ -24,7 +32,7 @@ Then open <http://localhost:8000>. Press `Ctrl+C` to stop it.
 
 That's just a shortcut for `python3 -m http.server 8000` (defined as `scripts.dev` in
 `package.json`). There's **no build step and no `npm install` needed** — the site is plain
-HTML/CSS/JS. Edit `index.html`, `style.css`, or `script.js` and refresh the browser.
+HTML/CSS/JS. Edit any `.html` file, `style.css`, or `script.js` and refresh the browser.
 
 If you get `Address already in use`, a server is already running on that port. Either
 `Ctrl+C` the old one, or pick a different port — the number is arbitrary:

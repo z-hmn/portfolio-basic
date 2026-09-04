@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className += " js";</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script defer src="/_vercel/insights/script.js"></script>
+<title>Design Suggestions for Flowcode — Zoe Homan</title>
+<meta name="description" content="An AI feature helping novice programmers identify creative next steps in Flowcode without removing their authorship. Interface design, React implementation, and evaluation with K-8 educators." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__name" href="../index.html">Zoe Homan</a>
+    <span class="topbar__meta">02 &middot; Flowcode &middot; HCI &amp; AI Tooling</span>
+    <nav class="topbar__nav">
+      <a href="../index.html#work" aria-current="page">Work</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================ HERO -- -->
+  <section class="shell case-hero">
+    <a class="case-hero__back" href="../index.html#work">All work</a>
+
+    <div class="case-hero__grid">
+      <div>
+        <div class="case-hero__kicker">
+          <span>02</span><span>HCI Research</span><span>2026</span>
+        </div>
+
+        <h1 class="case-hero__title">Design Suggestions for Flowcode</h1>
+
+        <p class="case-hero__sub">
+          An AI feature that helps novice programmers see what they could try next in a
+          creative coding project, while leaving the decision with them. Designed, built,
+          and evaluated at Barnard&rsquo;s Design Tools Lab.
+        </p>
+
+        <dl class="spec">
+          <div>
+            <dt>Type</dt>
+            <dd>HCI research<br />Design Tools Lab, Barnard</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Designed and implemented the feature end to end</dd>
+          </div>
+          <div>
+            <dt>Team</dt>
+            <dd>Grace Cai &middot; Tiffany Tseng (advisor)</dd>
+          </div>
+          <div>
+            <dt>Stack</dt>
+            <dd>React &middot; LLM prompt design &middot; Figma</dd>
+          </div>
+          <div>
+            <dt>Evaluation</dt>
+            <dd>3-hour workshop, K&#8209;8 STEM educators (N&nbsp;=&nbsp;11)</dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="fig" style="margin-bottom:0">
+        <div class="fig__media fig__media--cap">
+          <img src="../images/work/flowcode/interface.png" alt="The Flowcode environment: HTML, CSS and JavaScript editors on the left, a live animation preview, a generated flowchart of code structure, the Design Suggestions widget, and an explanation chat" width="1400" height="881" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 01</span>
+          <span class="fig__text">
+            <b>The environment.</b> Code editors (1) drive a live preview (2), with a
+            generated flowchart (3) and explanation chat (5) supporting comprehension.
+            Design Suggestions (4) is the feature I designed and built.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ====================================================== AT A GLANCE -- -->
+  <div class="shell">
+    <dl class="glance">
+      <div class="glance__item">
+        <dt>Question</dt>
+        <dd>How can a coding environment help novices identify opportunities to iterate, without making the creative decision for them?</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Approach</dt>
+        <dd>Literature review, three interface iterations, a React build with a custom prompt pipeline, then a workshop evaluation.</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Result</dt>
+        <dd>All eleven participants agreed they stayed in control of their creative decisions. About a quarter found the suggestions repetitive.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- ============================================================= NAV -- -->
+  <nav class="casenav" id="casenav">
+    <div class="casenav__inner">
+      <a href="#context">Context</a>
+      <a href="#problem">Design problem</a>
+      <a href="#process">Process</a>
+      <a href="#iteration">Iteration</a>
+      <a href="#feature">The feature</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#outcome">Outcome</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- ======================================================= CONTEXT -- -->
+    <section class="section section--flush" id="context">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">01</span>
+          <h2 class="head__title">Context</h2>
+        </div>
+        <p class="head__deck">
+          Flowcode is built for comprehension and authorship, which rules out simply
+          generating the code.
+        </p>
+      </div>
+
+      <div class="cols reveal">
+        <p>
+          Flowcode is a creative-coding environment from the Design Tools Lab. It pairs
+          HTML, CSS, and JavaScript editors with a live animation preview, a generated
+          flowchart of code structure, and a beginner-oriented explanation chat.
+        </p>
+        <p>
+          It is positioned deliberately against vibe coding: the goal is for a learner to
+          understand and own what they build. That commitment creates a specific failure
+          mode. A novice finishes a working animation, looks at it, and has no idea what
+          they could plausibly do next.
+        </p>
+        <p>
+          They can write the code. They cannot picture what to build next. Design
+          Suggestions addresses that gap.
+        </p>
+      </div>
+
+      <div class="pull reveal">
+        <p>How can we support novice programmers in <em>identifying opportunities to iterate</em> on creative coding projects?</p>
+        <span class="label pull__attr">Research question</span>
+      </div>
+    </section>
+
+    <!-- ======================================================= PROBLEM -- -->
+    <section class="section" id="problem">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">02</span>
+          <h2 class="head__title">The design problem</h2>
+        </div>
+        <p class="head__deck">
+          A suggestion has to be specific enough to act on and easy enough to ignore.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            A suggestion feature has an obvious trap at both ends. Too passive and nobody
+            finds it. Too assertive and it quietly becomes the author of the project,
+            with the learner accepting rather than choosing.
+          </p>
+          <p>
+            The literature frames useful proactive assistance as
+            <b>non-disruptive</b> and <b>context-aware</b>. Both of those turned out to
+            be hard design constraints rather than adjectives, and they drove every
+            decision that followed.
+          </p>
+          <p>
+            That also changed what counted as success. The measure was never whether
+            users accepted suggestions. It was whether users still felt the decisions
+            were theirs.
+          </p>
+        </div>
+
+        <dl class="facts reveal">
+          <div class="facts__item">
+            <dt>Constraint 01</dt>
+            <dd>Grounded in the learner&rsquo;s real code, naming elements that actually
+              exist in their project.</dd>
+          </div>
+          <div class="facts__item">
+            <dt>Constraint 02</dt>
+            <dd>Describes a direction. Never hands over a finished implementation.</dd>
+          </div>
+          <div class="facts__item">
+            <dt>Constraint 03</dt>
+            <dd>Costs nothing to dismiss, and stays out of the way when unused.</dd>
+          </div>
+          <div class="facts__item">
+            <dt>Success metric</dt>
+            <dd>Retained creative agency, measured directly in the post-workshop
+              survey.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ======================================================= PROCESS -- -->
+    <section class="section" id="process">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">03</span>
+          <h2 class="head__title">Process</h2>
+        </div>
+        <p class="head__deck">
+          Four stages from literature review to a feature running in the live
+          environment.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div>
+          <figure class="fig" style="margin-bottom:0">
+            <div class="fig__media">
+              <img src="../images/work/flowcode/sketch.jpg" alt="Early hand sketch of the suggestion widget as a small collapsed chip that expands into a full suggestion card" width="611" height="373" loading="lazy" />
+            </div>
+            <figcaption>
+              <span class="fig__num">Fig. 02</span>
+              <span class="fig__text">
+                <b>Earliest sketch.</b> The core interaction, a small ignorable chip that
+                expands on demand, was present in the first drawing and survived every
+                revision.
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="steps" style="margin-bottom:0">
+          <div class="steps__item">
+            <h4>Literature review</h4>
+            <p>Research on novice programming education, proactive AI support, and
+              creative coding, to establish what &ldquo;helpful&rdquo; had to mean here.</p>
+          </div>
+          <div class="steps__item">
+            <h4>Design exploration</h4>
+            <p>Low-fidelity sketches testing placements, triggers, and levels of
+              assertiveness for surfacing an idea.</p>
+          </div>
+          <div class="steps__item">
+            <h4>Prototype</h4>
+            <p>Figma mockups and lightweight prototypes narrowing a broad idea space to
+              one interaction model.</p>
+          </div>
+          <div class="steps__item">
+            <h4>Build and evaluate</h4>
+            <p>React implementation with a custom prompt pipeline, tested in a three-hour
+              workshop with K&#8209;8 STEM teachers.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================== ITERATION -- -->
+    <section class="section" id="iteration">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">04</span>
+          <h2 class="head__title">Iteration</h2>
+        </div>
+        <p class="head__deck">
+          Three versions answering one question: where does a suggestion live so that it
+          is available without imposing?
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <dl class="facts">
+            <div class="facts__item">
+              <dt>V1 &middot; Inside the chat</dt>
+              <dd>Suggestions appended to the explanation thread. They competed with long
+                generated explanations and were only visible after scrolling.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>V2 &middot; Pinned panel</dt>
+              <dd>Pulled onto its own surface and impossible to miss, but permanently
+                occupying the canvas and covering the flowchart underneath.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>V3 &middot; Collapsed by default</dt>
+              <dd>A single corner chip at rest, expanded on request. One suggestion at a
+                time, with a regenerate control and a handoff to the explanation chat.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="figrow figrow--2 figrow--frame" style="margin-bottom:0">
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/flowcode/v1.png" alt="Version 1: suggestions appended inside the explanation chat thread, buried below generated text" width="1100" height="630" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>V1 &mdash; buried</b>
+              <span>Reachable, but nobody looked.</span>
+            </div>
+          </figure>
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/flowcode/v2.png" alt="Version 2: a pinned suggestion panel occupying the canvas and obscuring the flowchart" width="618" height="903" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>V2 &mdash; imposing</b>
+              <span>Visible, but always in the way.</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <figure class="fig reveal">
+        <div class="fig__media fig__media--cap">
+          <img src="../images/work/flowcode/v3.png" alt="Version 3: the final Design Suggestions widget, collapsed to a corner chip and expanding into a single suggestion with regenerate and show-me-how controls" width="1500" height="926" loading="lazy" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 03</span>
+          <span class="fig__text">
+            <b>V3, the shipped model.</b> Each revision moved the same content further
+            out of the learner&rsquo;s way while keeping it equally reachable.
+          </span>
+        </figcaption>
+      </figure>
+
+      <div class="pull reveal">
+        <p>Each revision made the feature <em>quieter at rest and no harder to reach.</em></p>
+        <span class="label pull__attr">Design principle</span>
+      </div>
+    </section>
+
+    <!-- ======================================================= FEATURE -- -->
+    <section class="section" id="feature">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">05</span>
+          <h2 class="head__title">The feature</h2>
+        </div>
+        <p class="head__deck">
+          One idea at a time, named against the learner&rsquo;s own code, never
+          auto-applied.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            Design Suggestions generates a single, project-specific, achievable idea in
+            plain language, anchored to elements that exist in the learner&rsquo;s code
+            such as <code>#back-fin</code> or <code>#cloud</code>.
+          </p>
+          <p>
+            Showing one suggestion rather than a list was deliberate. A list invites
+            comparison shopping and shifts the learner into evaluating the
+            AI&rsquo;s options instead of forming their own intent. If the single
+            suggestion does not appeal, regenerating costs one click.
+          </p>
+          <p>
+            The <b>show me how</b> action passes the suggestion into the explanation chat
+            rather than writing code. Implementation stays the learner&rsquo;s job, and
+            the feature only ever supplies direction.
+          </p>
+        </div>
+
+        <div class="figrow figrow--2 figrow--frame" style="margin-bottom:0">
+          <figure>
+            <div class="fig__media fig__media--flush">
+              <img src="../images/work/flowcode/demo-expand.gif" alt="Animation showing the collapsed suggestion chip expanding into a full suggestion card" width="394" height="240" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 04 &mdash; At rest</b>
+              <span>A corner chip until the learner asks for it.</span>
+            </div>
+          </figure>
+          <figure>
+            <div class="fig__media fig__media--flush">
+              <img src="../images/work/flowcode/demo-full.gif" alt="Animation showing a suggestion being generated, regenerated, and handed off to the explanation chat" width="564" height="380" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 05 &mdash; Full flow</b>
+              <span>Generate, regenerate, hand off to the chat.</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== EVALUATION -- -->
+    <section class="section" id="evaluation">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">06</span>
+          <h2 class="head__title">Evaluation</h2>
+        </div>
+        <p class="head__deck">
+          Eleven K&#8209;8 STEM educators, most with little or no coding experience, over
+          a three-hour workshop.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            All eleven participants built working animations during the session. The
+            survey then targeted the thing the design was actually optimizing for.
+          </p>
+          <p>
+            <b>Every respondent agreed or strongly agreed that they remained in control
+            of their own creative decisions</b>, with no neutral responses at all. It is
+            the strongest and least ambiguous result in the study.
+          </p>
+          <p class="note">
+            Post-workshop survey, N&nbsp;=&nbsp;11 respondents per item. Percentages
+            rounded.
+          </p>
+        </div>
+
+        <div>
+          <div class="chart">
+            <div class="chart__legend">
+              <span><i class="sw-pos"></i> Strongly favourable</span>
+              <span><i class="sw-pos2"></i> Favourable</span>
+              <span><i class="sw-neu"></i> Neutral</span>
+              <span><i class="sw-neg"></i> Unfavourable</span>
+            </div>
+
+            <div class="chart__row">
+              <p class="chart__q">I <b>remained in control of the creative decisions</b> I made while using the feature.</p>
+              <div class="chart__bar">
+                <i class="sw-pos" style="width:64%" data-pct="64%"></i>
+                <i class="sw-pos2" style="width:36%" data-pct="36%"></i>
+              </div>
+            </div>
+
+            <div class="chart__row">
+              <p class="chart__q">The suggestions felt <b>relevant to the project</b> and my current code.</p>
+              <div class="chart__bar">
+                <i class="sw-pos" style="width:64%" data-pct="64%"></i>
+                <i class="sw-pos2" style="width:27%" data-pct="27%"></i>
+                <i class="sw-neu" style="width:9%"></i>
+              </div>
+            </div>
+
+            <div class="chart__row">
+              <p class="chart__q">The feature <b>helped me think of ideas</b> I would not have come up with on my own.</p>
+              <div class="chart__bar">
+                <i class="sw-pos" style="width:55%" data-pct="55%"></i>
+                <i class="sw-pos2" style="width:18%" data-pct="18%"></i>
+                <i class="sw-neu" style="width:27%" data-pct="27%"></i>
+              </div>
+            </div>
+
+            <div class="chart__row">
+              <p class="chart__q">The suggestions felt <b>repetitive.</b> <i>(reverse-scored)</i></p>
+              <div class="chart__bar">
+                <i class="sw-pos" style="width:64%" data-pct="64%"></i>
+                <i class="sw-neu" style="width:9%"></i>
+                <i class="sw-neg" style="width:27%" data-pct="27%"></i>
+              </div>
+            </div>
+          </div>
+          <p class="chart__note">
+            Bars are coloured by outcome rather than by Likert label, so the
+            reverse-scored item reads in the same direction as the rest.
+          </p>
+        </div>
+      </div>
+
+      <div class="side side--even reveal">
+        <div class="side__text">
+          <p>
+            Relevance and agency both landed. The weaker result is real and worth stating
+            plainly: roughly a quarter of participants found the suggestions
+            <b>repetitive</b>. With one suggestion surfaced at a time and no memory of
+            what had already been shown, the generator could circle the same handful of
+            ideas within a session.
+          </p>
+        </div>
+        <div class="side__text">
+          <p>
+            One finding sits outside the feature entirely. Many participants needed help
+            phrasing prompts at all, which suggests LLM prompting has become a curricular
+            topic in its own right rather than a skill that can be assumed of teachers
+            introducing students to AI tools.
+          </p>
+        </div>
+      </div>
+
+      <div class="findings reveal">
+        <div class="findings__item">
+          <h4>Adapt to experience level</h4>
+          <p>Proactive suggestions should scale their specificity to how much the learner
+            already knows.</p>
+        </div>
+        <div class="findings__item">
+          <h4>Track what was shown</h4>
+          <p>Suggestion history addresses the repetition finding directly, and is the
+            clearest next iteration.</p>
+        </div>
+        <div class="findings__item">
+          <h4>Connect the two features</h4>
+          <p>Linking suggestions to code-to-preview highlighting would show learners
+            exactly which element a suggestion refers to.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= OUTCOME -- -->
+    <section class="section" id="outcome">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">07</span>
+          <h2 class="head__title">Outcome</h2>
+        </div>
+        <p class="head__deck">
+          A suggestion feature changes what a learner thinks is possible, so agency was
+          the measure that mattered.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p class="lead">
+            Design Suggestions shipped into Flowcode and held up in testing: relevant,
+            useful, and never at the cost of the learner&rsquo;s sense of ownership.
+          </p>
+          <p>
+            A system with excellent suggestions that hollowed out the learner&rsquo;s
+            sense of authorship would have failed at its actual job. Most of the design
+            work here went into restraint: one idea, off to the side, never applied
+            automatically.
+          </p>
+        </div>
+
+        <div class="caveat">
+          <span class="label label--green">Credit</span>
+          <p>
+            Presented as a summer research poster with Grace Cai, advised by Tiffany
+            Tseng, in the Barnard Department of Computer Science. Design Suggestions is my
+            contribution. The companion Code-to-Preview Highlighting feature was designed
+            and built by Grace Cai.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <a class="pager" href="neural-shading.html">
+      <div>
+        <span class="label">Next project &middot; 03</span>
+        <div class="pager__title">Neural Shading for Architectural Scenes</div>
+      </div>
+      <span class="card__cta">Case study</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="shell footer">
+  <span>&copy; 2026 Zoe Homan</span>
+  <span>Design Tools Lab &middot; Barnard College</span>
+  <span><a href="../index.html">Index</a></span>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

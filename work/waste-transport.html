@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className += " js";</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script defer src="/_vercel/insights/script.js"></script>
+<title>Modeling Residential Waste Transportation — Zoe Homan</title>
+<meta name="description" content="Three routing methodologies for New York City residential waste, compared with network analysis and spatial statistics to show how modeling assumptions shape geography." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__name" href="../index.html">Zoe Homan</a>
+    <span class="topbar__meta">01 &middot; Waste Transportation &middot; GIS &amp; Network Analysis</span>
+    <nav class="topbar__nav">
+      <a href="../index.html#work" aria-current="page">Work</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================ HERO -- -->
+  <section class="shell case-hero">
+    <a class="case-hero__back" href="../index.html#work">All work</a>
+
+    <div class="case-hero__grid">
+      <div>
+        <div class="case-hero__kicker">
+          <span>01</span><span>GIS &amp; Network Analysis</span><span>2026</span>
+        </div>
+
+        <h1 class="case-hero__title">Modeling Residential Waste Transportation in New York City</h1>
+
+        <p class="case-hero__sub">
+          The city reports how much waste each district produces. It does not publish
+          how that waste moves. I built three routing models over the same street
+          network to test what different assumptions produce.
+        </p>
+
+        <dl class="spec">
+          <div>
+            <dt>Type</dt>
+            <dd>Academic research<br />Advanced GIS, Barnard College</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Co-author. Data pipeline, routing models, spatial statistics, cartography</dd>
+          </div>
+          <div>
+            <dt>Collaborator</dt>
+            <dd>Nina Feldman</dd>
+          </div>
+          <div>
+            <dt>Tools</dt>
+            <dd>ArcGIS Pro &middot; Network Analyst &middot; Python</dd>
+          </div>
+          <div>
+            <dt>Statistics</dt>
+            <dd>Local Moran&rsquo;s I &middot; Lee&rsquo;s L</dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="fig" style="margin-bottom:0">
+        <div class="fig__media fig__media--cap">
+          <img src="../images/work/waste/candidate-routes.png" alt="Dense web of green candidate waste-truck routes across all five boroughs of New York City, converging on black disposal site markers" width="1169" height="1157" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 01</span>
+          <span class="fig__text">
+            <b>The routing universe.</b> Five closest-facility candidate routes from
+            every district section. All three models select from this fixed set.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ======================================================= AT A GLANCE -- -->
+  <div class="shell">
+    <dl class="glance">
+      <div class="glance__item">
+        <dt>Question</dt>
+        <dd>How do different routing assumptions change the modeled geography of waste transport, and where do the resulting corridors fall?</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Approach</dt>
+        <dd>One fixed truck network and one candidate route set. Three assignment rules. Compared with Local Moran&rsquo;s I and Lee&rsquo;s L.</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Result</dt>
+        <dd>The three rules produce materially different maps, but four corridors persist across all of them. The most flexible rule clustered the hardest.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- ============================================================= NAV -- -->
+  <nav class="casenav" id="casenav">
+    <div class="casenav__inner">
+      <a href="#premise">Premise</a>
+      <a href="#data">Data</a>
+      <a href="#network">Network</a>
+      <a href="#models">Three models</a>
+      <a href="#clustering">Clustering</a>
+      <a href="#demographics">Demographics</a>
+      <a href="#limits">Limits</a>
+      <a href="#outcome">Outcome</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- ======================================================= PREMISE -- -->
+    <section class="section section--flush" id="premise">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">01</span>
+          <h2 class="head__title">Premise</h2>
+        </div>
+        <p class="head__deck">
+          Public data gives tonnage per district and the location of every facility.
+          The movement between them is missing.
+        </p>
+      </div>
+
+      <div class="cols reveal">
+        <p>
+          Sanitation is one of the most visible infrastructural systems in New York and
+          one of the least documented at route level. You can find out how many tons a
+          district produced last month. You cannot find out how those tons travelled.
+        </p>
+        <p>
+          That absence has analytical consequences. Represented only as an aggregate
+          quantity per district, the spatial cost of moving waste disappears. Route
+          intensity, corridor exposure, and any relationship between transport patterns
+          and demographic conditions become impossible to examine.
+        </p>
+        <p>
+          The Department of Sanitation&rsquo;s operational routes are not public, so
+          this project does not try to reconstruct them. It models three plausible
+          routing logics and compares them. The comparison is the experiment.
+        </p>
+      </div>
+
+      <div class="pull reveal">
+        <p>What do different routing assumptions produce when you follow each one all the way through to a map?</p>
+        <span class="label pull__attr">Research question</span>
+      </div>
+    </section>
+
+    <!-- ========================================================== DATA -- -->
+    <section class="section" id="data">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">02</span>
+          <h2 class="head__title">Data preparation</h2>
+        </div>
+        <p class="head__deck">
+          District tonnage pushed down to sections, weighted by residential units.
+        </p>
+      </div>
+
+      <div class="side side--text reveal">
+        <div class="side__text">
+          <p>
+            DSNY reports refuse tonnage by <b>district</b>. Districts are too coarse to
+            act as collection origins, so tonnage has to be distributed to district
+            <b>sections</b>, the finer operational unit.
+          </p>
+          <p>
+            I aggregated residential unit counts from MapPLUTO at both scales, then
+            allocated each district&rsquo;s annual tonnage across its sections in
+            proportion to residential share. Section centroids became the modeled route
+            origins.
+          </p>
+          <dl class="facts">
+            <div class="facts__item">
+              <dt>First assumption</dt>
+              <dd>Residential units stand in for waste generation, which assumes
+                relative uniformity within a district.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>Known distortion</dt>
+              <dd>Filling smaller units from a larger aggregate introduces the
+                Modifiable Areal Unit Problem. Every downstream number is a modeled
+                approximation.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="figrow figrow--2" style="margin-bottom:0">
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/waste/data-inputs.png" alt="Four small maps: DSNY districts, DSNY sections, a circular inset of PLUTO residential building footprints, and a blue choropleth of residential density by section" width="1061" height="1016" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 02 &mdash; Inputs</b>
+              <span>Districts, sections, and MapPLUTO residential units. The inset shows
+                building footprints at block scale.</span>
+            </div>
+          </figure>
+          <figure>
+            <div class="fig__media">
+              <img src="../images/work/waste/section-tonnage.png" alt="Choropleth map of New York City showing estimated waste tonnage allocated to each DSNY district section in four shades of green" width="944" height="935" loading="lazy" />
+            </div>
+            <div class="triptych__cap">
+              <b>Fig. 03 &mdash; Estimated section tonnage</b>
+              <span>District totals redistributed by residential share. This surface
+                drives every route weight that follows.</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= NETWORK -- -->
+    <section class="section" id="network">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">03</span>
+          <h2 class="head__title">Network construction</h2>
+        </div>
+        <p class="head__deck">
+          A truck-eligible street network, and five candidate facilities for every
+          origin.
+        </p>
+      </div>
+
+      <div class="side side--text reveal" style="margin-bottom:1rem">
+        <div class="side__text">
+          <p>
+            I built a truck-eligible road network from NYC LION street centerlines in
+            ArcGIS Pro, then ran a closest-facility analysis from every section centroid
+            to its five nearest disposal or transfer facilities.
+          </p>
+          <p>
+            That output is the <b>routing universe</b>, the constrained set of
+            possibilities all three methodologies draw from. Fixing it first is what
+            makes the later comparison fair: the three models differ only in how they
+            select from this set.
+          </p>
+          <p class="note">
+            Staten Island is the clearest constraint in the network. A sparse loop tied
+            to a single facility, with one long connection over the Verrazzano that no
+            routing logic can avoid.
+          </p>
+        </div>
+        <figure class="fig" style="margin-bottom:0">
+          <div class="fig__media">
+            <img src="../images/work/waste/network-inputs.png" alt="Three small maps in a row: graduated section centroids as origin points, black disposal facility destinations, and the pale grey truck-eligible LION street network" width="1600" height="514" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="fig__num">Fig. 04</span>
+            <span class="fig__text">
+              <b>Three inputs.</b> Origins graduated by estimated tonnage, in-city
+              disposal and transfer destinations, and the truck-eligible street network.
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ======================================================== MODELS -- -->
+    <section class="section" id="models">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">04</span>
+          <h2 class="head__title">Three routing models</h2>
+        </div>
+        <p class="head__deck">
+          Same city, same network, same candidate routes. Three rules for assigning
+          tonnage to facilities.
+        </p>
+      </div>
+
+      <div class="cols reveal" style="margin-bottom:1.25rem">
+        <p>
+          Each model resolves the same question differently. Method&nbsp;1 optimizes for
+          proximity alone. Method&nbsp;2 introduces facility capacity through a Python
+          optimization routine. Method&nbsp;3 drops single-facility assignment and splits
+          each section&rsquo;s tonnage across two facilities.
+        </p>
+        <p>
+          Routes were then buffered 25&nbsp;ft, clipped to census tracts, and weighted by
+          tonnage and length within each tract. That <b>route intensity</b> surface is the
+          unit of every analysis that follows.
+        </p>
+      </div>
+
+      <div class="figrow figrow--key reveal">
+        <figure>
+          <div class="fig__media">
+            <img src="../images/work/waste/method-legend.png" alt="Legend: route tonnage graduated from small to extra large, district section centroids, and disposal sites" width="242" height="312" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>Key</b>
+            <span>Shared across all three maps.</span>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig__media fig__media--flush">
+            <img src="../images/work/waste/method-1.jpg" alt="Method 1 route map: green routes radiating outward around many disposal facilities across New York City" width="760" height="760" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>01 &mdash; Minimum distance</b>
+            <span>Each section assigned entirely to its nearest facility. A
+              spatial-efficiency baseline in which proximity is the only
+              consideration.</span>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig__media fig__media--flush">
+            <img src="../images/work/waste/method-2.jpg" alt="Method 2 route map: fewer, heavier trunk corridors converging on larger-capacity disposal facilities" width="760" height="762" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>02 &mdash; Capacity-adjusted</b>
+            <span>A Python optimization balances network distance against each
+              facility&rsquo;s annual capacity target. Flow consolidates onto fewer,
+              heavier corridors.</span>
+          </div>
+        </figure>
+        <figure>
+          <div class="fig__media fig__media--flush">
+            <img src="../images/work/waste/method-3.jpg" alt="Method 3 route map: many overlapping route corridors from tonnage split proportionally between two facilities" width="760" height="760" loading="lazy" />
+          </div>
+          <div class="triptych__cap">
+            <b>03 &mdash; Two-facility proportional</b>
+            <span>Tonnage split between two candidate facilities, weighted by distance
+              and capacity. Produces the densest overlap of shared corridors.</span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ==================================================== CLUSTERING -- -->
+    <section class="section" id="clustering">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">05</span>
+          <h2 class="head__title">Spatial clustering</h2>
+        </div>
+        <p class="head__deck">
+          Local Moran&rsquo;s I on tract-level route intensity, run separately for each
+          method.
+        </p>
+      </div>
+
+      <figure class="fig reveal">
+        <div class="fig__media fig__media--dark">
+          <img src="../images/work/waste/local-morans.png" alt="Three Local Moran's I cluster maps of New York City on black backgrounds, comparing route intensity clusters and outliers across the three routing methods" width="1304" height="448" loading="lazy" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 05</span>
+          <span class="fig__text">
+            <b>Clusters and outliers by method.</b> High-intensity clusters hold in the
+            same corridors under all three rules while the texture of clustering shifts.
+          </span>
+        </figcaption>
+      </figure>
+
+      <div class="side side--even reveal">
+        <div class="side__text">
+          <p>
+            Four areas surface under every model: the <b>South Bronx</b>,
+            <b>Upper Manhattan</b>, <b>Staten Island</b>, and parts of
+            <b>North Brooklyn</b>. Because they persist across three different
+            assignment rules, they point to facility siting and network topology rather
+            than to any one routing logic.
+          </p>
+        </div>
+        <div class="side__text">
+          <p>
+            The differences are equally informative. Method&nbsp;1 fragments intensity
+            radially around many destinations. Method&nbsp;2 consolidates it near larger
+            facilities. Method&nbsp;3 distributes waste across <em>more</em> facilities
+            and still produces the strongest clustering of the three.
+          </p>
+        </div>
+      </div>
+
+      <div class="pull reveal">
+        <p>Splitting tonnage across more facilities produced <em>the strongest corridor concentration of the three.</em></p>
+        <span class="label pull__attr">Finding &middot; Method 3</span>
+      </div>
+    </section>
+
+    <!-- ================================================== DEMOGRAPHICS -- -->
+    <section class="section" id="demographics">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">06</span>
+          <h2 class="head__title">Demographic association</h2>
+        </div>
+        <p class="head__deck">
+          Lee&rsquo;s L measures bivariate spatial association between route intensity
+          and demographic surfaces.
+        </p>
+      </div>
+
+      <figure class="fig reveal">
+        <div class="fig__media fig__media--dark">
+          <img src="../images/work/waste/lees-l-ssi.png" alt="Lee's L bivariate maps comparing Supplemental Security Income percentage against route intensity for each of the three routing methods" width="1265" height="426" loading="lazy" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 06</span>
+          <span class="fig__text">
+            <b>Supplemental Security Income against route intensity.</b> The greyscale
+            panel is the demographic surface. The three colored panels are its spatial
+            association with route intensity under each method.
+          </span>
+        </figcaption>
+      </figure>
+
+      <div class="side side--even reveal">
+        <div class="side__text">
+          <p>
+            One result has to be read carefully. Total population correlates with route
+            intensity partly <em>by construction</em>, since residential units were the
+            proxy used to allocate tonnage in the first place. Reporting that as a
+            finding would be circular, so I set it aside.
+          </p>
+        </div>
+        <div class="side__text">
+          <p>
+            The Supplemental Security Income surface is the interpretively useful one.
+            Under all three methods, modeled route intensity co-occurs with areas of
+            socioeconomic vulnerability, particularly in the South Bronx, North
+            Brooklyn, and Southeast Queens.
+          </p>
+          <p class="note">
+            This identifies a spatial coincidence in a modeled surface. It does not
+            establish exposure, health burden, or causation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== LIMITS -- -->
+    <section class="section" id="limits">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">07</span>
+          <h2 class="head__title">Limitations</h2>
+        </div>
+        <p class="head__deck">
+          When the operational system is hidden, the model is a structured hypothesis.
+          These are its terms.
+        </p>
+      </div>
+
+      <div class="caveat caveat--cols reveal">
+        <ul>
+          <li>
+            <b>Proxy allocation.</b> Section tonnage is estimated from residential
+            units. MAUP uncertainty carries through everything downstream.
+          </li>
+          <li>
+            <b>Centroids are not pickup points.</b> They compress the distributed
+            reality of curbside collection into one origin per section.
+          </li>
+          <li>
+            <b>Static shortest paths.</b> The models ignore truck capacity, traffic,
+            time-of-day routing, sanitation schedules, marine transfer timing, garage
+            locations, and collection sequencing.
+          </li>
+          <li>
+            <b>First-degree destinations only.</b> Many facilities modeled here are
+            transfer stations rather than final disposal. Waste geography beyond city
+            limits is out of scope.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================================================= OUTCOME -- -->
+    <section class="section" id="outcome">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">08</span>
+          <h2 class="head__title">Outcome</h2>
+        </div>
+        <p class="head__deck">
+          The divergence between the three models is the result the project reports.
+        </p>
+      </div>
+
+      <div class="findings reveal" style="margin-top:0">
+        <div class="findings__item">
+          <h4>Assumptions become geographies</h4>
+          <p>
+            Three defensible routing rules over identical data produced materially
+            different maps of where the city&rsquo;s waste burden falls.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Some structure is fixed</h4>
+          <p>
+            Corridors that persist across all methods mark where facility siting and
+            network topology constrain the outcome regardless of routing logic.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Opacity has method consequences</h4>
+          <p>
+            Where operational systems are not public, modeling choices quietly become
+            analytical claims. Naming them is part of the work.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:clamp(1.25rem,2.4vw,2rem)">
+        <p class="lead txt--wide">
+          The approach generalizes to any partially inaccessible infrastructure: build
+          several defensible models, compare them honestly, and treat the divergence
+          between them as evidence about the method. The geographies that become visible
+          are inseparable from the assumptions used to construct them.
+        </p>
+      </div>
+    </section>
+
+    <a class="pager" href="flowcode.html">
+      <div>
+        <span class="label">Next project &middot; 02</span>
+        <div class="pager__title">Design Suggestions for Flowcode</div>
+      </div>
+      <span class="card__cta">Case study</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="shell footer">
+  <span>&copy; 2026 Zoe Homan</span>
+  <span>Advanced GIS &middot; Barnard College</span>
+  <span><a href="../index.html">Index</a></span>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
