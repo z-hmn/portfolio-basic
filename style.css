@@ -165,14 +165,6 @@ p:last-child { margin-bottom: 0; }
   align-items: start;
 }
 
-.mast__eyebrow {
-  display: flex; align-items: center; gap: 0.75rem;
-  margin-bottom: 0.9rem;
-}
-.mast__eyebrow::after {
-  content: ""; flex: 1; height: 1px; background: var(--rule);
-}
-
 .mast__name {
   font-size: clamp(2.6rem, 7.2vw, 5.4rem);
   font-weight: 700;
