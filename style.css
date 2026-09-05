@@ -506,17 +506,6 @@ figcaption, .fig figcaption {
 }
 .card:hover .card__cta::after { transform: translateX(5px); }
 
-.card--soon .card__frame {
-  display: grid; place-items: center;
-  border-style: dashed; background: transparent;
-}
-.card--soon .card__title { color: var(--ink-faint); }
-.card--soon .card__index { background: var(--ink-faint); }
-.card__soon {
-  font-family: var(--mono); font-size: 0.62rem;
-  letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-faint);
-}
-
 @media (max-width: 780px) { .work { grid-template-columns: 1fr; } }
 
 /* =========================================================================
