@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className += " js";</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script defer src="/_vercel/insights/script.js"></script>
+<title>Color Correct — Zoe Homan</title>
+<meta name="description" content="A web app that teaches photo editing through seven adjustment tools, ending in a practical exercise scored by distance from a target edit rather than by a single correct answer." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__name" href="../index.html">Zoe Homan</a>
+    <span class="topbar__meta">Color Correct</span>
+    <nav class="topbar__nav">
+      <a href="../index.html#work" aria-current="page">Work</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================ HERO -- -->
+  <section class="shell case-hero">
+    <a class="case-hero__back" href="../index.html#work">All work</a>
+
+    <div class="case-hero__grid">
+      <div>
+        <div class="case-hero__kicker">
+          <span>04</span><span>Web Application</span><span>2025</span>
+        </div>
+
+        <h1 class="case-hero__title">Color Correct</h1>
+
+        <p class="case-hero__sub">
+          A web app that teaches photo editing by letting you move the sliders. Seven
+          lessons, then a practical exercise where the app scores your edit against a
+          target and tells you which adjustment to fix next.
+        </p>
+
+        <dl class="spec">
+          <div>
+            <dt>Type</dt>
+            <dd>Self-directed project</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Solo. Curriculum, interface, image processing, scoring</dd>
+          </div>
+          <div>
+            <dt>Stack</dt>
+            <dd>Flask &middot; JavaScript &middot; Canvas &middot; Render</dd>
+          </div>
+          <div>
+            <dt>Content</dt>
+            <dd>8 lessons, 7 adjustment tools, 4 assessment questions</dd>
+          </div>
+          <div>
+            <dt>Links</dt>
+            <dd>
+              <a href="https://colorcorrect.onrender.com" target="_blank" rel="noopener noreferrer">Live site</a><br />
+              <a href="https://github.com/z-hmn/Color-Correct" target="_blank" rel="noopener noreferrer">Source</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="fig" style="margin-bottom:0">
+        <div class="fig__media fig__media--cap">
+          <img src="../images/work/colorcorrect/quiz.jpg" alt="The practical exercise interface: a target image beside the learner's working image, with seven labelled adjustment sliders down the right side" width="1689" height="950" />
+        </div>
+        <figcaption>
+          <span class="fig__num">Fig. 01</span>
+          <span class="fig__text">
+            <b>The practical exercise.</b> Match the target on the left using the same
+            seven tools taught in the lessons. Nothing is graded until you ask.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ====================================================== AT A GLANCE -- -->
+  <div class="shell">
+    <dl class="glance">
+      <div class="glance__item">
+        <dt>Question</dt>
+        <dd>How do you teach a skill where the right answer is a judgement call rather than a fixed value?</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Approach</dt>
+        <dd>Seven single-tool lessons with live sliders, a workflow lesson on ordering them, then a practical exercise scored on distance from a target.</dd>
+      </div>
+      <div class="glance__item">
+        <dt>Result</dt>
+        <dd>Scoring by per-tool tolerance instead of exact match. Feedback names the weakest adjustment and which way to move it.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="shell">
+
+    <!-- ======================================================= PREMISE -- -->
+    <section class="section section--flush" id="premise">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">01</span>
+          <h2 class="head__title">Premise</h2>
+        </div>
+      </div>
+
+      <div class="side side--text reveal">
+        <div>
+          <figure class="fig" style="margin-bottom:0">
+            <div class="fig__media">
+              <img src="../images/work/colorcorrect/compare.jpg" alt="The Manhattan Bridge seen from a brick-lined DUMBO street, shown twice: the flatter original beside a corrected version with a deeper sky and warmer brick" width="2130" height="877" loading="lazy" />
+            </div>
+            <figcaption>
+              <span class="fig__num">Fig. 02</span>
+              <span class="fig__text">
+                <b>Original and corrected.</b> The same seven adjustments account for the
+                whole difference.
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="side__text">
+          <p class="lead">
+            Photo editing software hands you a panel of sliders and no explanation of what
+            any of them do or what order to use them in.
+          </p>
+          <p>
+            Most tutorials solve this by walking through one photograph. You watch someone
+            else make decisions, and the reasoning stays with them. I wanted the opposite
+            arrangement, where the learner moves the slider and watches the image respond
+            before any instruction arrives.
+          </p>
+          <p>
+            The app teaches seven adjustments one at a time, then the order to apply them
+            in, then asks the learner to reproduce a target edit from scratch.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= TOOLS -- -->
+    <section class="section" id="tools">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">02</span>
+          <h2 class="head__title">Seven tools, then the order</h2>
+        </div>
+      </div>
+
+      <div class="cols reveal">
+        <p>
+          Each lesson isolates a single tool. Exposure moves overall brightness. Highlights
+          and shadows target the bright and dark ends separately. Contrast widens the
+          distance between them. Warmth and tint fix color casts on two axes, blue to
+          yellow and green to magenta. Saturation scales color intensity. Adjustments run
+          as per-pixel operations on a canvas, so the image updates as the slider moves.
+        </p>
+        <p>
+          An eighth lesson covers the part tutorials usually skip, which is sequence. The
+          tools interact, so the order they are applied in changes the result. Adding
+          contrast changes how the shadows read, which is why the last stage is going back
+          through the earlier ones.
+        </p>
+      </div>
+
+      <div class="steps reveal" style="margin-top:clamp(1.25rem,2.4vw,2rem);margin-bottom:0">
+        <div class="steps__item">
+          <h4>Exposure</h4>
+          <p>Set overall brightness first. Every later adjustment is measured against it.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Highlights &amp; shadows</h4>
+          <p>Recover the two ends. Pull back blown-out brights, lift detail out of the dark.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Contrast</h4>
+          <p>Separate the ends once they both hold detail.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Warmth, tint, saturation</h4>
+          <p>Color last, because it reads differently once the tonal range is settled.</p>
+        </div>
+        <div class="steps__item">
+          <h4>Review</h4>
+          <p>Return to the earlier tools. The adjustments interact, so one pass is never enough.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================== ASSESSMENT -- -->
+    <section class="section" id="assessment">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">03</span>
+          <h2 class="head__title">Scoring an edit with no single right answer</h2>
+        </div>
+      </div>
+
+      <div class="side side--flip reveal">
+        <div class="side__text">
+          <p>
+            A multiple choice question has one correct option. An edit does not. Two people
+            matching the same target will land on different slider values and both results
+            can be right. Marking the exercise on exact values would fail edits that look
+            correct.
+          </p>
+          <p>
+            So the practical exercise scores each of the seven tools separately, as distance
+            from a target value divided by a tolerance set for that tool. Warmth and exposure
+            get the widest tolerances because they are the most forgiving to the eye. The
+            edit passes when the average score clears a threshold, which lets a learner be
+            slightly off on several tools and still be judged correct.
+          </p>
+          <p>
+            Feedback comes in two tiers. The first is written into the question and describes
+            the goal in perceptual terms. The second is computed: the app takes the
+            lowest-scoring of the seven adjustments and returns one sentence about that
+            adjustment alone.
+          </p>
+
+          <dl class="facts">
+            <div class="facts__item">
+              <dt>Tier 01 &middot; authored</dt>
+              <dd>&ldquo;The desired result has more orange tones than blue.&rdquo;
+                Describes what to look for.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>Tier 02 &middot; computed</dt>
+              <dd>&ldquo;The image is too cool. Try increasing the warmth.&rdquo;
+                Names the weakest tool and a direction.</dd>
+            </div>
+            <div class="facts__item">
+              <dt>Never returned</dt>
+              <dd>The target value, the size of the gap, and the other six scores. Giving
+                a number turns the exercise into data entry.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div>
+          <figure class="fig" style="margin-bottom:0">
+            <div class="fig__media fig__media--cap">
+              <img src="../images/work/colorcorrect/feedback.jpg" alt="Desired Result and Your Edit shown side by side, the learner's version too blue, with a hint bar underneath reading that the desired result has more orange tones than blue" width="1015" height="800" loading="lazy" />
+            </div>
+            <figcaption>
+              <span class="fig__num">Fig. 03</span>
+              <span class="fig__text">
+                <b>One hint at a time.</b> Target on the left, the learner&rsquo;s edit on
+                the right, and a single directional prompt underneath.
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================= OUTCOME -- -->
+    <section class="section" id="outcome">
+      <div class="head reveal">
+        <div>
+          <span class="head__num">04</span>
+          <h2 class="head__title">Outcome</h2>
+        </div>
+      </div>
+
+      <div class="findings reveal">
+        <div class="findings__item">
+          <h4>Tolerances are a teaching decision</h4>
+          <p>
+            How strict the scoring is determines whether the app reads as a tutor or an
+            examiner. Widening the tolerances during testing changed the feel of the whole
+            exercise.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Withholding is a design choice</h4>
+          <p>
+            The app has every number needed to correct the edit outright. Returning one
+            direction instead is what keeps the learner doing the work.
+          </p>
+        </div>
+        <div class="findings__item">
+          <h4>Sequence is the real lesson</h4>
+          <p>
+            Learners can know what each slider does and still produce poor edits. The
+            ordering lesson turned out to carry more weight than any single tool.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:clamp(1.25rem,2.4vw,2rem)">
+        <p class="lead txt--wide">
+          Color Correct is where I first built a system that points a learner toward a next
+          step without making the decision for them. The same question came back at larger
+          scale in <a href="flowcode.html">Flowcode</a>, where an AI assistant had to
+          suggest a direction without taking authorship of the project.
+        </p>
+      </div>
+    </section>
+
+    <a class="pager" href="waste-transport.html">
+      <div>
+        <span class="label">Back to start &middot; 01</span>
+        <div class="pager__title">Modeling Residential Waste Transportation</div>
+      </div>
+      <span class="card__cta">Case study</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="shell footer">
+  <span>&copy; 2026 Zoe Homan</span>
+  <span>Self-directed project</span>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

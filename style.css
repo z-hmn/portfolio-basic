@@ -165,14 +165,6 @@ p:last-child { margin-bottom: 0; }
   align-items: start;
 }
 
-.mast__eyebrow {
-  display: flex; align-items: center; gap: 0.75rem;
-  margin-bottom: 0.9rem;
-}
-.mast__eyebrow::after {
-  content: ""; flex: 1; height: 1px; background: var(--rule);
-}
-
 .mast__name {
   font-size: clamp(2.6rem, 7.2vw, 5.4rem);
   font-weight: 700;
@@ -244,10 +236,6 @@ p:last-child { margin-bottom: 0; }
 .section--flush { padding-top: 0; }
 
 .head {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(0.75rem, 3vw, 3rem);
-  align-items: baseline;
   border-top: 1px solid var(--ink);
   padding-top: 0.7rem;
   margin-bottom: clamp(1.15rem, 2.2vw, 1.85rem);
@@ -263,16 +251,11 @@ p:last-child { margin-bottom: 0; }
   color: var(--green); display: block; margin-bottom: 0.3rem;
 }
 
-/* the deck carries the point of the section in one plain sentence */
-.head__deck {
+.caveat > .caveat__lead {
   font-family: var(--display);
-  font-size: clamp(0.9rem, 1.35vw, 1.02rem);
-  line-height: 1.42; color: var(--ink-soft);
-  margin: 0; max-width: 42rem;
-}
-
-@media (max-width: 720px) {
-  .head { grid-template-columns: 1fr; gap: 0.5rem; }
+  font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+  line-height: 1.42; color: var(--ink);
+  margin: 0 0 0.85rem; max-width: 46rem;
 }
 
 /* =========================================================================
@@ -522,17 +505,6 @@ figcaption, .fig figcaption {
   content: "→"; transition: transform 0.2s;
 }
 .card:hover .card__cta::after { transform: translateX(5px); }
-
-.card--soon .card__frame {
-  display: grid; place-items: center;
-  border-style: dashed; background: transparent;
-}
-.card--soon .card__title { color: var(--ink-faint); }
-.card--soon .card__index { background: var(--ink-faint); }
-.card__soon {
-  font-family: var(--mono); font-size: 0.62rem;
-  letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-faint);
-}
 
 @media (max-width: 780px) { .work { grid-template-columns: 1fr; } }
 
