@@ -182,10 +182,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 .mast__bio {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  gap: clamp(1rem, 2.4vw, 2.25rem);
-  max-width: 46rem;
+  max-width: 38rem;
 }
 .mast__bio p { font-size: 1rem; line-height: 1.5; }
 .mast__bio strong { font-weight: 400; font-family: var(--display); font-weight: 600; }
@@ -203,11 +200,9 @@ p:last-child { margin-bottom: 0; }
   color: var(--ink-faint); margin-top: 0.45rem;
 }
 
-/* skills index — horizontal, dense */
+/* Skills follow the project grid. */
 .mast__skills {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  border-top: 1px solid var(--ink);
-  padding-top: 0.85rem;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 215px), 1fr));
   gap: 0.85rem clamp(1.25rem, 3vw, 2.75rem);
@@ -264,6 +259,11 @@ p:last-child { margin-bottom: 0; }
 
 .txt { max-width: 34rem; }
 .txt--wide { max-width: 44rem; }
+.section > .txt:not(:last-child),
+.case-hero > .txt { margin-bottom: clamp(1.25rem, 2.4vw, 2rem); }
+.txt h3 { margin-top: 1.5rem; margin-bottom: 0.6rem; }
+.limits-list, .references-list { padding-left: 1.2rem; }
+.limits-list li, .references-list li { margin-bottom: 0.5rem; }
 
 /* two-column body text — halves the scroll for longer passages */
 .cols {
@@ -347,6 +347,7 @@ code {
 .fig__media--flush { padding: 0; }
 .fig__media--dark { background: #101010; border-color: #101010; }
 .fig__media img { width: 100%; }
+.fig__media img[src$=".gif"] { width: auto; margin-inline: auto; }
 
 /* cap runaway heights so no single figure eats a screen */
 .fig__media--cap img { max-height: 480px; width: auto; margin-inline: auto; }
@@ -377,6 +378,7 @@ figcaption, .fig figcaption {
 .figrow--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 /* map row with the shared key riding in the first slot */
 .figrow--key { grid-template-columns: 176px repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.figrow--key > figure > .fig__media { flex: none; }
 .figrow--key .fig__media { border: 0; padding: 0; background: transparent; }
 .figrow > figure { margin: 0; display: flex; flex-direction: column; }
 .figrow > figure > .fig__media { flex: 1; display: grid; place-items: center; }
@@ -391,6 +393,23 @@ figcaption, .fig figcaption {
   width: 100%; height: clamp(180px, 19vw, 270px);
   object-fit: contain; object-position: center;
 }
+.loss-curves { max-width: 960px; }
+
+/* A compact experiment table uses the existing type and ruled layout. */
+.table-scroll { overflow-x: auto; margin-bottom: clamp(1.25rem, 2.4vw, 2rem); }
+.experiment-table { width: 100%; min-width: 600px; border-collapse: collapse; }
+.experiment-table caption {
+  text-align: left; font-family: var(--mono); font-size: 0.68rem;
+  color: var(--ink-mute); padding-bottom: 0.6rem;
+}
+.experiment-table th, .experiment-table td {
+  text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.7rem 1rem 0.7rem 0;
+  font-family: var(--display); font-size: 0.85rem; line-height: 1.45;
+}
+.experiment-table thead th { color: var(--green); border-top: 1px solid var(--ink); }
+.experiment-table tbody th { width: 25%; }
 
 /* steps sitting beside a figure read better as a 2x2 block */
 .side .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -461,10 +480,8 @@ figcaption, .fig figcaption {
   aspect-ratio: 3 / 2;
 }
 .card__frame img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.3, 1);
+  width: 100%; height: 100%; object-fit: contain;
 }
-.card:hover .card__frame img { transform: scale(1.035); }
 
 .card__index {
   position: absolute; top: 0; left: 0; z-index: 2;
@@ -564,6 +581,11 @@ figcaption, .fig figcaption {
   gap: clamp(1.25rem, 3vw, 2.75rem);
   align-items: start;
 }
+
+/* Keep all eight panels of the illumination comparison readable. */
+.case-hero--comparison .case-hero__grid > .fig { grid-column: 1 / -1; }
+.case-hero--comparison .case-hero__grid > :first-child { grid-column: 1 / -1; max-width: 70rem; }
+.case-hero--comparison .case-hero__sub { max-width: 48rem; }
 
 .case-hero__kicker {
   font-family: var(--mono); font-size: 0.65rem;
